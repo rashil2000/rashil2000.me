@@ -1,0 +1,64 @@
+import Head from 'next/head'
+import Link from 'next/link'
+
+export default function Project() {
+  return (
+    <div>
+      <Head>
+        <title>The Project Title - rashil2000</title>
+        <link rel="icon" href="../favicon.ico" />
+        <meta name="description" content="kuch to hoga idhar pata nahi" />
+      </Head>
+
+      <style jsx global>{`
+        #no-border {
+          border: 0;
+          text-align: center;
+        }
+    `}</style>
+
+      <header>
+        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
+        <br />
+      </header>
+
+      <main>
+        <div className="abstract">
+          <h2>The Project Title</h2>
+          <br />
+          <p style={{ textAlign: "justify" }}>
+            Yozz
+            <br />
+            Let's see what we can put here
+          </p>
+        </div>
+        <br />
+      </main>
+
+      <footer>
+        <table id="no-border" style={{ width: "100%" }}>
+          <tbody>
+            <tr>
+              <td id="no-border" style={{ width: "50%" }}><Link href="/projects"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Projects</p></a></Link></td>
+              <td id="no-border" style={{ width: "50%" }}><Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link></td>
+            </tr>
+          </tbody>
+        </table>
+      </footer>
+    </div>
+  )
+}
+
+export async function getStaticPaths() {
+  const paths = ['/projects/1', '/projects/2', '/projects/3', '/projects/4'];
+  return {
+    paths,
+    fallback: false
+  }
+}
+
+export async function getStaticProps() {
+  return {
+    props: {}
+  }
+}

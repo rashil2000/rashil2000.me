@@ -14,10 +14,6 @@ export default function Home() {
       </Head>
 
       <style jsx global>{`
-        @font-face {
-          font-family: FiraCode;
-          src: url('FiraCode.ttf');
-        }
         #social-icon {
           margin: 0 auto;
           width: 15px;
@@ -29,7 +25,7 @@ export default function Home() {
     `}</style>
 
       <header>
-        <h2 style={{ textAlign: "center", fontFamily: "FiraCode", fontWeight: "lighter" }}>rashil2000</h2>
+        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
         <p className="author">
           Rashil Gandhi
@@ -57,23 +53,21 @@ export default function Home() {
             </tr>
           </tbody>
         </table>
-        <br />
-        <br />
-        <br />
+        <br /><br /><br />
       </main>
 
       <footer>
         <table id="no-border" style={{ width: "100%" }}>
           <tbody>
             <tr>
-              <td id="no-border"><a target="_blank" rel="noopener noreferrer" href="https://github.com/rashil2000"><img id="social-icon" src="images/github.svg" alt="GitHub" /></a></td>
-              <td id="no-border"><a target="_blank" rel="noopener noreferrer" href="https://gitlab.com/rashil2000"><img id="social-icon" src="images/gitlab.svg" alt="GitLab" /></a></td>
-              <td id="no-border"><a target="_blank" rel="noopener noreferrer" href="https://twitter.com/rashil2000"><img id="social-icon" src="images/twitter.svg" alt="Twitter" /></a></td>
-              <td id="no-border"><a target="_blank" rel="noopener noreferrer" href="https://linkedin.com/in/rashil2000"><img id="social-icon" src="images/linkedin.svg" alt="LinkedIn" /></a></td>
-              <td id="no-border"><a target="_blank" rel="noopener noreferrer" href="https://facebook.com/rashil2000"><img id="social-icon" src="images/facebook.svg" alt="Facebook" /></a></td>
-              <td id="no-border"><a target="_blank" rel="noopener noreferrer" href="https://instagram.com/rashil_2000"><img id="social-icon" src="images/instagram.svg" alt="Instagram" /></a></td>
-              <td id="no-border"><a target="_blank" rel="noopener noreferrer" href="https://reddit.com/u/rashil2000"><img id="social-icon" src="images/reddit.svg" alt="Reddit" /></a></td>
-              <td id="no-border"><a target="_blank" rel="noopener noreferrer" href="https://youtube.com/rashilgandhi2000"><img id="social-icon" src="images/youtube.svg" alt="YouTube" /></a></td>
+              <td id="no-border"><a target="_blank" rel="noopener" href="https://github.com/rashil2000"><img id="social-icon" src="images/github.svg" alt="GitHub" /></a></td>
+              <td id="no-border"><a target="_blank" rel="noopener" href="https://gitlab.com/rashil2000"><img id="social-icon" src="images/gitlab.svg" alt="GitLab" /></a></td>
+              <td id="no-border"><a target="_blank" rel="noopener" href="https://twitter.com/rashil2000"><img id="social-icon" src="images/twitter.svg" alt="Twitter" /></a></td>
+              <td id="no-border"><a target="_blank" rel="noopener" href="https://linkedin.com/in/rashil2000"><img id="social-icon" src="images/linkedin.svg" alt="LinkedIn" /></a></td>
+              <td id="no-border"><a target="_blank" rel="noopener" href="https://facebook.com/rashil2000"><img id="social-icon" src="images/facebook.svg" alt="Facebook" /></a></td>
+              <td id="no-border"><a target="_blank" rel="noopener" href="https://instagram.com/rashil_2000"><img id="social-icon" src="images/instagram.svg" alt="Instagram" /></a></td>
+              <td id="no-border"><a target="_blank" rel="noopener" href="https://reddit.com/u/rashil2000"><img id="social-icon" src="images/reddit.svg" alt="Reddit" /></a></td>
+              <td id="no-border"><a target="_blank" rel="noopener" href="https://youtube.com/rashilgandhi2000"><img id="social-icon" src="images/youtube.svg" alt="YouTube" /></a></td>
             </tr>
           </tbody>
         </table>
