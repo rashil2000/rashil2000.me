@@ -14,7 +14,29 @@ export default function AdminPanel() {
   const { user, loading } = useUser();
   const router = useRouter();
 
-  if ((typeof window !== 'undefined') && !(user || loading)) router.push('/authenticate');
+  if ((typeof window !== 'undefined') && !(user || loading)) {
+    router.push('/authenticate');
+    return (
+      <div>
+        <Head>
+          <title>Redirecting... - rashil2000</title>
+          <link rel="icon" href="favicon.ico" />
+          <meta name="description" content="Redirecting to authenticate..." />
+        </Head>
+        <header>
+          <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
+          <br />
+        </header>
+        <main>
+          <div className="abstract"><h2>Redirecting to authenticate...</h2></div>
+          <br /><br />
+        </main>
+        <footer>
+          <Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link>
+        </footer>
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -73,14 +95,12 @@ export default function AdminPanel() {
         <div className="abstract"><h2>Add Project</h2></div>
         <br />
         <form>
-          <label for="name">Name:</label>{" "}
+          <label htmlFor="name">Name:</label>{" "}
           <input type="text" id="name" name="name" /><br />
-          <label for="github">GitHub:</label>{" "}
+          <label htmlFor="github">GitHub:</label>{" "}
           <input type="text" id="github" name="github" /><br /><br />
           <div className="abstract">
-            <br />
-            <input type="submit" value="Post" />
-            <br />
+            <br /><input type="submit" value="Post" /><br />
           </div>
         </form>
         <br /><br />
