@@ -1,6 +1,6 @@
-## Markdown Test
+## The Blog Title
 
-**Hello world!!!**
+**Markdown Test**
 
 ### Code Sample
 

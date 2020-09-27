@@ -20,6 +20,8 @@ export default function Authenticate() {
           <h2>Enter Passphrase</h2>
           <br /><br />
           <input type="password" style={{ backgroundColor: "transparent", borderTop: "0", borderRight: "0", borderLeft: "0", outline: "0", textAlign: "center" }} />
+          <br /><br /><br />
+          <button onClick={() => history.back()}>Validate</button>
         </div>
         <br /><br /><br />
       </main>

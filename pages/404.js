@@ -5,7 +5,7 @@ export default function Custom404() {
   return (
     <div>
       <Head>
-        <title>404 - Page Not Found - rashil2000</title>
+        <title>404 - Not Found - rashil2000</title>
         <link rel="icon" href="favicon.ico" />
         <meta name="description" content="Error 404 - Not found" />
       </Head>
@@ -17,7 +17,7 @@ export default function Custom404() {
 
       <main>
         <div className="abstract">
-          <h2>No Page Found</h2>
+          <h2>Resource Not Found</h2>
           <br /><br />
           <p>You seem to have fallen on a broken link.</p>
           <br />
