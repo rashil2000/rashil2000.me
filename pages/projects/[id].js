@@ -1,7 +1,10 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 
-export default function Project() {
+import CodeBlock from '../../lib/CodeBlock'
+
+export default function Project({ markdown }) {
   return (
     <div>
       <Head>
@@ -20,19 +23,12 @@ export default function Project() {
       <header>
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
+        <p className="author"><i>Last commit: 22 September 2020</i></p>
       </header>
 
       <main>
-        <div className="abstract">
-          <h2>The Project Title</h2>
-          <br />
-          <p style={{ textAlign: "justify" }}>
-            Yozz
-            <br />
-            Let's see what we can put here
-          </p>
-        </div>
-        <br />
+        <ReactMarkdown source={markdown} renderers={{ code: CodeBlock }} />
+        <br /><br />
       </main>
 
       <footer>
@@ -58,7 +54,12 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps() {
+  let markdown = require('fs').readFileSync(require('path').join(process.cwd(), 'temp/project.md'), 'utf-8')
+
   return {
-    props: {}
+    props: {
+      markdown
+    },
+    revalidate: 1
   }
 }

@@ -25,9 +25,7 @@ export default function Projects() {
             <Link href={`projects/${key}`}>
               <a><h5 style={{ margin: "0" }}>Hey yo this is a project</h5></a>
             </Link>
-            <div style={{ textAlign: "right", marginBottom: "20px" }}>
-              <a target="_blank" rel="noopener" href="https://github.com/rashil2000" style={{ fontStyle: "italic", textDecoration: "none" }}>GitHub Link</a>
-            </div>
+            <p style={{ textAlign: "right", fontStyle: "italic", textDecoration: "none", marginBottom: "10px" }}>22nd January, 2020</p>
           </React.Fragment>
         ))}
         <br /><br /><br />

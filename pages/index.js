@@ -30,7 +30,7 @@ export default function Home() {
         <p className="author">
           Rashil Gandhi
           <br />
-          {today.toLocaleString('default', { month: 'long' }) + ' ' + today.getFullYear()}
+          <i>{today.toLocaleString('default', { month: 'long' }) + ' ' + today.getFullYear()}</i>
         </p>
       </header>
 

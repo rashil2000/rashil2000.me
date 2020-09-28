@@ -23,17 +23,12 @@ export default function Blog({ markdown }) {
       <header>
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
+        <p className="author"><i>Posted: 22 September 2020</i></p>
       </header>
 
       <main>
-        <div className="abstract">
-          <h2>The Blog Title</h2>
-          <br />
-        </div>
-
         <ReactMarkdown source={markdown} renderers={{ code: CodeBlock }} />
-
-        <br />
+        <br /><br />
       </main>
 
       <footer>
@@ -58,13 +53,13 @@ export async function getStaticPaths() {
   }
 }
 
-
 export async function getStaticProps() {
-  let markdown = require('fs').readFileSync(require('path').join(process.cwd(), 'temp/content.md'), 'utf-8')
+  let markdown = require('fs').readFileSync(require('path').join(process.cwd(), 'temp/blog.md'), 'utf-8')
 
   return {
     props: {
       markdown
-    }
+    },
+    revalidate: 1
   }
 }
