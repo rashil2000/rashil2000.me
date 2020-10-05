@@ -16,7 +16,7 @@ export default function Blog({ markdown }) {
       <header>
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
-        <p className="author"><i>Posted: 22 September 2020</i></p>
+        <p className="author"><i>Posted: 05 October 2020</i></p>
       </header>
 
       <main>
