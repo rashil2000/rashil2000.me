@@ -25,7 +25,6 @@ export default function Home() {
 
       <main>
         <div className="abstract">
-          <h2>About</h2>
           <br />
           <p style={{ textAlign: "justify" }}>
             Computers, in general, have been the subject of my interest for as long as I can remember. I'm passionate about software development; the idea of creating something that people can use to make their lives better, deeply moves me. When I'm not learning a programming language or doing coursework, I'm playing video games or updating myself with the newest innovations in the gaming industry. Sometimes I play the guitar or compose electronic music if I'm feeling creative enough. Photography and video editing are some other hobbies worth mentioning.
