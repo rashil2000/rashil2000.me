@@ -13,17 +13,6 @@ export default function Home() {
         <meta name="keywords" content="Rashil Gandhi, Rashil gandhi, rashil Gandhi, rashil gandhi, Rashil2000, rashil2000, RashilGandhi2000, rashilgandhi2000" />
       </Head>
 
-      <style jsx global>{`
-        #social-icon {
-          margin: 0 auto;
-          width: 15px;
-        }
-        #no-border {
-          border: 0;
-          text-align: center;
-        }
-    `}</style>
-
       <header>
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />

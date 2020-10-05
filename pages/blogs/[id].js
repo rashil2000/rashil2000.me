@@ -13,13 +13,6 @@ export default function Blog({ markdown }) {
         <meta name="description" content="kuch to hoga idhar pata nahi" />
       </Head>
 
-      <style jsx global>{`
-        #no-border {
-          border: 0;
-          text-align: center;
-        }
-    `}</style>
-
       <header>
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
