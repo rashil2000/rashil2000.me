@@ -8,7 +8,6 @@ export default function Home() {
     <div>
       <Head>
         <title>rashil2000 - Rashil Gandhi</title>
-        <link rel="icon" href="favicon.ico" />
         <meta name="description" content="Gamer. Editor. Programmer." />
         <meta name="keywords" content="Rashil Gandhi, Rashil gandhi, rashil Gandhi, rashil gandhi, Rashil2000, rashil2000, RashilGandhi2000, rashilgandhi2000" />
       </Head>

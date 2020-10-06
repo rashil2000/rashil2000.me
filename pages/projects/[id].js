@@ -9,7 +9,6 @@ export default function Project({ markdown }) {
     <div>
       <Head>
         <title>The Project Title - rashil2000</title>
-        <link rel="icon" href="../favicon.ico" />
         <meta name="description" content="kuch to hoga idhar pata nahi" />
       </Head>
 

@@ -1,48 +1,19 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
 
 import CodeBlock from '../lib/CodeBlock'
-
-const useUser = () => ({ user: null, loading: false })
+import AuthBlock from '../lib/AuthBlock'
 
 export default function AdminPanel() {
   const [value, setValue] = React.useState("_Start typing..._");
   const [selectedTab, setSelectedTab] = React.useState("write");
-  const { user, loading } = useUser();
-  const router = useRouter();
-
-  if ((typeof window !== 'undefined') && !(user || loading)) {
-    router.push('/authenticate');
-    return (
-      <div>
-        <Head>
-          <title>Redirecting... - rashil2000</title>
-          <link rel="icon" href="favicon.ico" />
-          <meta name="description" content="Redirecting to authenticate..." />
-        </Head>
-        <header>
-          <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-          <br />
-        </header>
-        <main>
-          <div className="abstract"><h2>Redirecting to authenticate...</h2></div>
-          <br /><br />
-        </main>
-        <footer>
-          <Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link>
-        </footer>
-      </div>
-    )
-  }
 
   return (
-    <div>
+    <AuthBlock>
       <Head>
         <title>Admin Panel - rashil2000</title>
-        <link rel="icon" href="favicon.ico" />
         <meta name="description" content="Manage content on the site." />
       </Head>
 
@@ -109,6 +80,6 @@ export default function AdminPanel() {
       <footer>
         <Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link>
       </footer>
-    </div>
+    </AuthBlock>
   )
 }

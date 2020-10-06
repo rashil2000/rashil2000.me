@@ -9,7 +9,6 @@ export default function Blog({ markdown }) {
     <div>
       <Head>
         <title>The Blog Title - rashil2000</title>
-        <link rel="icon" href="../favicon.ico" />
         <meta name="description" content="kuch to hoga idhar pata nahi" />
       </Head>
 

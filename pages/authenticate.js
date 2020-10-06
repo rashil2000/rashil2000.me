@@ -6,7 +6,6 @@ export default function Authenticate() {
     <div>
       <Head>
         <title>Authenticate - rashil2000</title>
-        <link rel="icon" href="favicon.ico" />
         <meta name="description" content="Enter Passphrase" />
       </Head>
 

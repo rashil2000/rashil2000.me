@@ -6,7 +6,6 @@ export default function Blogs() {
     <div>
       <Head>
         <title>Blogs - rashil2000</title>
-        <link rel="icon" href="../favicon.ico" />
         <meta name="description" content="Random musings." />
         <meta name="keywords" content="Rashil Gandhi Blog, blog rashil gandhi, Rashil2000 Blog, blog rashil2000, RashilGandhi2000 Blog, blog rashilgandhi2000" />
       </Head>

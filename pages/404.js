@@ -6,7 +6,6 @@ export default function Custom404() {
     <div>
       <Head>
         <title>404 - Not Found - rashil2000</title>
-        <link rel="icon" href="favicon.ico" />
         <meta name="description" content="Error 404 - Not found" />
       </Head>
 

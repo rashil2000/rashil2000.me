@@ -6,7 +6,6 @@ export default function Projects() {
     <div>
       <Head>
         <title>Projects - rashil2000</title>
-        <link rel="icon" href="../favicon.ico" />
         <meta name="description" content="Random musings." />
         <meta name="keywords" content="Rashil Gandhi Project, project rashil gandhi, Rashil2000 Project, project rashil2000, RashilGandhi2000 Project, project rashilgandhi2000" />
       </Head>
