@@ -4,22 +4,31 @@ import ReactMarkdown from 'react-markdown'
 
 import CodeBlock from '../../lib/CodeBlock'
 
-export default function Blog({ markdown }) {
+function getDateString(value) {
+  const stringdate = new Date(value);
+  return (stringdate.getDate() + ' ' + stringdate.toLocaleString('default', { month: 'long' }) + ' ' + stringdate.getFullYear());
+}
+
+export default function Blog({ blog }) {
   return (
     <div>
       <Head>
-        <title>The Blog Title - rashil2000</title>
-        <meta name="description" content="kuch to hoga idhar pata nahi" />
+        <title>{blog.title} - rashil2000</title>
+        <meta name="description" content={blog.description} />
       </Head>
 
       <header>
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
-        <p className="author"><i>Posted: 05 October 2020</i></p>
+        <p className="author">
+          <i>
+            Posted: {getDateString(blog.date)}
+          </i>
+        </p>
       </header>
 
       <main>
-        <ReactMarkdown source={markdown} renderers={{ code: CodeBlock }} />
+        <ReactMarkdown source={blog.content} renderers={{ code: CodeBlock }} />
         <br /><br />
       </main>
 
@@ -38,20 +47,28 @@ export default function Blog({ markdown }) {
 }
 
 export async function getStaticPaths() {
-  const paths = ['/blogs/1', '/blogs/2', '/blogs/3', '/blogs/4'];
+  const res = await fetch(`${process.env.DB_HOST}/blogs`);
+  const blogs = await res.json();
+
+  const paths = blogs.map(item => {
+    return {
+      params: {
+        slug: item.slug
+      }
+    }
+  })
   return {
     paths,
     fallback: false
   }
 }
 
-export async function getStaticProps() {
-  let markdown = require('fs').readFileSync(require('path').join(process.cwd(), 'temp/blog.md'), 'utf-8')
+export async function getStaticProps(context) {
+  const res = await fetch(`${process.env.DB_HOST}/blogs/${context.params.slug}`);
+  const blog = await res.json();
 
   return {
-    props: {
-      markdown
-    },
+    props: { blog },
     revalidate: 1
   }
 }
