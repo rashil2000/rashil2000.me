@@ -50,13 +50,7 @@ export async function getStaticPaths() {
   const res = await fetch(`${process.env.DB_HOST}/blogs`);
   const blogs = await res.json();
 
-  const paths = blogs.map(item => {
-    return {
-      params: {
-        slug: item.slug
-      }
-    }
-  })
+  const paths = blogs.map(item => { return { params: { slug: item.slug } } });
   return {
     paths,
     fallback: false
