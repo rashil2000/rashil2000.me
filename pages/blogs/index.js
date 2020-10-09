@@ -30,7 +30,7 @@ export default function Blogs({ blogs }) {
         <div className="abstract"><h2>Random musings</h2></div>
         <br />
         {sortedBlogs.map(blog => (
-          <React.Fragment key={blog.id}>
+          <React.Fragment key={blog._id}>
             <Link href="/blogs/[slug]" as={`/blogs/${blog.slug}`}>
               <a><h5 style={{ margin: "0" }}>{blog.title}</h5></a>
             </Link>

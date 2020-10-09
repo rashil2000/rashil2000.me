@@ -41,7 +41,7 @@ export default function Projects({ projects }) {
         <div className="abstract"><h2>Stuff that's (seemingly) cool</h2></div>
         <br />
         {sortedProjects.map(project => (
-          <React.Fragment key={project.id}>
+          <React.Fragment key={project._id}>
             <Link href="/projects/[slug]" as={`/projects/${project.slug}`}>
               <a><h5 style={{ margin: "0" }}>{project.title}</h5></a>
             </Link>
