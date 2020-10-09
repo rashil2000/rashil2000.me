@@ -54,7 +54,7 @@ export default function Home() {
               <td id="no-border" style={{ width: "25%" }}><a href="resume.pdf"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Résumé</p></a></td>
               <td id="no-border" style={{ width: "25%" }}><Link href="blogs"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Blogs</p></a></Link></td>
               <td id="no-border" style={{ width: "25%" }}><Link href="projects"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Projects</p></a></Link></td>
-              <td id="no-border" style={{ width: "25%" }}><Link href="admin"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Admin</p></a></Link></td>
+              <td id="no-border" style={{ width: "25%" }}><Link href="manage"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></a></Link></td>
             </tr>
           </tbody>
         </table>
