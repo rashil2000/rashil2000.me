@@ -31,11 +31,6 @@ export default function Projects({ projects }) {
         <meta name="keywords" content="Rashil Gandhi Project, project rashil gandhi, Rashil2000 Project, project rashil2000, RashilGandhi2000 Project, project rashilgandhi2000" />
       </Head>
 
-      <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
-      </header>
-
       <main>
 
         <div className="abstract"><h2>Stuff that's (seemingly) cool</h2></div>

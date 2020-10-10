@@ -17,11 +17,6 @@ export default function ManageProjects() {
         <meta name="description" content="Add, edit or remove projects on the site." />
       </Head>
 
-      <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
-      </header>
-
       <main>
         <div className="abstract"><h2>Manage Projects</h2></div>
         <br />

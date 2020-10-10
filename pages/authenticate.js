@@ -9,11 +9,6 @@ export default function Authenticate() {
         <meta name="description" content="Enter Passphrase" />
       </Head>
 
-      <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
-      </header>
-
       <main>
         <div className="abstract">
           <h2>Enter Passphrase</h2>

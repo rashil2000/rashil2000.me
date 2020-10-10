@@ -9,11 +9,6 @@ export default function Custom404() {
         <meta name="description" content="Error 404 - Not found" />
       </Head>
 
-      <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
-      </header>
-
       <main>
         <div className="abstract">
           <h2>Resource Not Found</h2>

@@ -13,12 +13,11 @@ export default function Home() {
       </Head>
 
       <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
+
         <p className="author">
           Rashil Gandhi
           <br />
-          <i>{today.toLocaleString('default', { month: 'long' }) + ' ' + today.getFullYear()}</i>
+          <i>{today.getDate() + ' ' + today.toLocaleString('default', { month: 'long' }) + ' ' + today.getFullYear()}</i>
         </p>
       </header>
 

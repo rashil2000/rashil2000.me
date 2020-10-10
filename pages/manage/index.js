@@ -11,11 +11,6 @@ export default function Manage() {
         <meta name="description" content="Manage content on the site" />
       </Head>
 
-      <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
-      </header>
-
       <main>
         <div className="abstract">
           <h2>Manage content on the site</h2>

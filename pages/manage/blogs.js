@@ -17,11 +17,6 @@ export default function ManageBlogs() {
         <meta name="description" content="Add, edit or remove blogs on the site." />
       </Head>
 
-      <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
-      </header>
-
       <main>
         <div className="abstract"><h2>Manage Blogs</h2></div>
         <br />

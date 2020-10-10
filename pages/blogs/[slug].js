@@ -18,8 +18,6 @@ export default function Blog({ blog }) {
       </Head>
 
       <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
         <p className="author">
           <i>
             Posted: {getDateString(blog.date)}

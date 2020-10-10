@@ -22,8 +22,6 @@ export default function Project({ project }) {
       </Head>
 
       <header>
-        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-        <br />
         <p className="author">
           <a target="_blank" rel="noopener" href={`https://github.com/${project.github}`} style={{ textDecoration: 'none', fontStyle: 'italic' }}>
             Last commit: {getLastCommit(project.github)}

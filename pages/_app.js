@@ -29,6 +29,8 @@ export default function MyApp({ Component, pageProps }) {
         <Head>
           <link rel="icon" href={faviconPath} />
         </Head>
+        <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
+        <br />
         <style jsx global>{`
           html {
             transition: color 300ms, background-color 300ms;
