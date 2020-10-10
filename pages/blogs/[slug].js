@@ -2,12 +2,8 @@ import Head from 'next/head'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 
+import { dateString, getSlugPaths, getBlog } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
-
-function getDateString(value) {
-  const stringdate = new Date(value);
-  return (stringdate.getDate() + ' ' + stringdate.toLocaleString('default', { month: 'long' }) + ' ' + stringdate.getFullYear());
-}
 
 export default function Blog({ blog }) {
   return (
@@ -19,9 +15,7 @@ export default function Blog({ blog }) {
 
       <header>
         <p className="author">
-          <i>
-            Posted: {getDateString(blog.date)}
-          </i>
+          <i>Posted: {dateString(blog.date)}</i>
         </p>
       </header>
 
@@ -45,10 +39,8 @@ export default function Blog({ blog }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${process.env.DB_HOST}/blogs`);
-  const blogs = await res.json();
+  const paths = await getSlugPaths('blogs');
 
-  const paths = blogs.map(item => { return { params: { slug: item.slug } } });
   return {
     paths,
     fallback: false
@@ -56,8 +48,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch(`${process.env.DB_HOST}/blogs/${context.params.slug}`);
-  const blog = await res.json();
+  const blog = await getBlog(context.params.slug);
 
   return {
     props: { blog },

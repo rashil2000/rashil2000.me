@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-export default function Home() {
-  const today = new Date();
+import { dateString } from '../lib/utils'
 
+export default function Home() {
   return (
     <div>
       <Head>
@@ -17,7 +17,7 @@ export default function Home() {
         <p className="author">
           Rashil Gandhi
           <br />
-          <i>{today.getDate() + ' ' + today.toLocaleString('default', { month: 'long' }) + ' ' + today.getFullYear()}</i>
+          <i>{dateString()}</i>
         </p>
       </header>
 

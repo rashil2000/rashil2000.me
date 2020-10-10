@@ -18,7 +18,7 @@ export default function MyApp({ Component, pageProps }) {
     window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', e =>
       setValue(e.matches ? lightValue : darkValue)
     );
-    console.log(router.pathname);
+
     const pathArray = ['/blogs/[slug]', '/projects/[slug]', '/manage/blogs', '/manage/projects'];
     const faviconPath = (pathArray.includes(router.pathname))
       ? '../favicon.ico'
@@ -46,6 +46,12 @@ export default function MyApp({ Component, pageProps }) {
           #no-border {
             border: 0;
             text-align: center;
+          }
+          #date-style {
+            text-align: right;
+            font-style: italic;
+            text-decoration: none;
+            margin-bottom: 10px;
           }
         `}</style>
         <Component {...pageProps} />

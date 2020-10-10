@@ -3,10 +3,11 @@ import Link from 'next/link'
 import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
 
+import { getAllBlogs } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
 import AuthBlock from '../../lib/AuthBlock'
 
-export default function ManageBlogs() {
+export default function ManageBlogs({ currentBlogs }) {
   const [value, setValue] = React.useState("_Start typing..._");
   const [selectedTab, setSelectedTab] = React.useState("write");
 
@@ -20,12 +21,12 @@ export default function ManageBlogs() {
       <main>
         <div className="abstract"><h2>Manage Blogs</h2></div>
         <br />
-        {[1, 2, 3, 4].map(key => (
-          <React.Fragment key={key}>
-            <Link href={`blogs/${key}`}>
-              <a><h5 style={{ margin: "0" }}>Hey yo this is a blog</h5></a>
+        {currentBlogs.map(blog => (
+          <React.Fragment key={blog._id}>
+            <Link href="/blogs/[slug]" as={`/blogs/${blog.slug}`}>
+              <a><h5 style={{ margin: "0" }}>{blog.title}</h5></a>
             </Link>
-            <p style={{ textAlign: "right", fontStyle: "italic", textDecoration: "none", marginBottom: "10px" }}><span>Edit</span> | <span>Remove</span></p>
+            <p id="date-style"><span>Edit</span> | <span>Remove</span></p>
           </React.Fragment>
         ))}
         <br />
@@ -73,4 +74,13 @@ export default function ManageBlogs() {
       </footer>
     </AuthBlock>
   )
+}
+
+export async function getStaticProps() {
+  const currentBlogs = await getAllBlogs();
+
+  return {
+    props: { currentBlogs },
+    revalidate: 1
+  }
 }

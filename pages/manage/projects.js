@@ -3,10 +3,11 @@ import Link from 'next/link'
 import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
 
+import { getAllProjects } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
 import AuthBlock from '../../lib/AuthBlock'
 
-export default function ManageProjects() {
+export default function ManageProjects({ currentProjects }) {
   const [value, setValue] = React.useState("_Start typing..._");
   const [selectedTab, setSelectedTab] = React.useState("write");
 
@@ -20,12 +21,12 @@ export default function ManageProjects() {
       <main>
         <div className="abstract"><h2>Manage Projects</h2></div>
         <br />
-        {[1, 2, 3, 4].map(key => (
-          <React.Fragment key={key}>
-            <Link href={`projects/${key}`}>
-              <a><h5 style={{ margin: "0" }}>Hey yo this is a project</h5></a>
+        {currentProjects.map(project => (
+          <React.Fragment key={project._id}>
+            <Link href="/projects/[slug]" as={`/projects/${project.slug}`}>
+              <a><h5 style={{ margin: "0" }}>{project.title}</h5></a>
             </Link>
-            <p style={{ textAlign: "right", fontStyle: "italic", textDecoration: "none", marginBottom: "10px" }}><span>Edit</span> | <span>Remove</span></p>
+            <p id="date-style"><span>Edit</span> | <span>Remove</span></p>
           </React.Fragment>
         ))}
         <br />
@@ -76,4 +77,13 @@ export default function ManageProjects() {
       </footer>
     </AuthBlock>
   )
+}
+
+export async function getStaticProps() {
+  const currentProjects = await getAllProjects();
+
+  return {
+    props: { currentProjects },
+    revalidate: 1
+  }
 }

@@ -1,17 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import useSWR from 'swr'
 import ReactMarkdown from 'react-markdown'
 
+import { dateString, getSlugPaths, getProject } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
-
-function getLastCommit(identifier) {
-  const { data, error } = useSWR(`https://api.github.com/repos/${identifier}/commits`)
-  if (error) return 'failed to load';
-  if (!data) return 'loading...';
-  const stringdate = new Date(data[0].commit.committer.date);
-  return (stringdate.getDate() + ' ' + stringdate.toLocaleString('default', { month: 'long' }) + ' ' + stringdate.getFullYear());
-}
 
 export default function Project({ project }) {
   return (
@@ -24,7 +16,7 @@ export default function Project({ project }) {
       <header>
         <p className="author">
           <a target="_blank" rel="noopener" href={`https://github.com/${project.github}`} style={{ textDecoration: 'none', fontStyle: 'italic' }}>
-            Last commit: {getLastCommit(project.github)}
+            Last commit: {dateString(project.date)}
           </a>
         </p>
       </header>
@@ -49,10 +41,8 @@ export default function Project({ project }) {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch(`${process.env.DB_HOST}/projects`);
-  const projects = await res.json();
+  const paths = await getSlugPaths('projects');
 
-  const paths = projects.map(item => { return { params: { slug: item.slug } } });
   return {
     paths,
     fallback: false
@@ -60,8 +50,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const res = await fetch(`${process.env.DB_HOST}/projects/${context.params.slug}`);
-  const project = await res.json();
+  const project = await getProject(context.params.slug);
 
   return {
     props: { project },

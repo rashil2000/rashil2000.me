@@ -1,17 +1,9 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-function getDateString(value) {
-  const stringdate = new Date(value);
-  return (stringdate.getDate() + ' ' + stringdate.toLocaleString('default', { month: 'long' }) + ' ' + stringdate.getFullYear());
-}
+import { dateString, getAllBlogs } from '../../lib/utils'
 
 export default function Blogs({ blogs }) {
-  const sortedBlogs = blogs.sort((a, b) => {
-    if (a.date < b.date) return 1;
-    else return -1;
-  })
-
   return (
     <div>
       <Head>
@@ -21,15 +13,14 @@ export default function Blogs({ blogs }) {
       </Head>
 
       <main>
-
         <div className="abstract"><h2>Random musings</h2></div>
         <br />
-        {sortedBlogs.map(blog => (
+        {blogs.map(blog => (
           <React.Fragment key={blog._id}>
             <Link href="/blogs/[slug]" as={`/blogs/${blog.slug}`}>
               <a><h5 style={{ margin: "0" }}>{blog.title}</h5></a>
             </Link>
-            <p style={{ textAlign: "right", fontStyle: "italic", textDecoration: "none", marginBottom: "10px" }}>{getDateString(blog.date)}</p>
+            <p id="date-style">{dateString(blog.date)}</p>
           </React.Fragment>
         ))}
         <br /><br /><br />
@@ -43,8 +34,7 @@ export default function Blogs({ blogs }) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`${process.env.DB_HOST}/blogs`);
-  const blogs = await res.json();
+  const blogs = await getAllBlogs();
 
   return {
     props: { blogs },
