@@ -1,7 +1,11 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
+import { validate } from '../lib/utils'
+
 export default function Authenticate() {
+  const [value, setValue] = React.useState('');
+
   return (
     <div>
       <Head>
@@ -13,9 +17,9 @@ export default function Authenticate() {
         <div className="abstract">
           <h2>Enter Passphrase</h2>
           <br /><br />
-          <input type="password" style={{ backgroundColor: "transparent", borderTop: "0", borderRight: "0", borderLeft: "0", outline: "0", textAlign: "center" }} />
+          <input type="password" style={{ backgroundColor: "transparent", borderTop: "0", borderRight: "0", borderLeft: "0", outline: "0", textAlign: "center" }} onChange={e => setValue(e.target.value)} />
           <br /><br /><br />
-          <button onClick={() => history.back()}>Validate</button>
+          <button onClick={() => validate(value)}>Validate</button>
         </div>
         <br /><br /><br />
       </main>

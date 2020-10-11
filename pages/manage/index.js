@@ -24,7 +24,7 @@ export default function Manage() {
             </tbody>
           </table>
           <br /><br /><br />
-          <button onClick={() => location = "/"}>Invalidate</button>
+          <button onClick={() => { localStorage.clear(); location = '/'; }}>Invalidate</button>
           <br /><br /><br />
         </div>
       </main>

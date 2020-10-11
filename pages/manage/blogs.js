@@ -7,9 +7,13 @@ import { getAllBlogs } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
 import AuthBlock from '../../lib/AuthBlock'
 
-export default function ManageBlogs({ currentBlogs }) {
+export default function ManageBlogs() {
   const [value, setValue] = React.useState("_Start typing..._");
   const [selectedTab, setSelectedTab] = React.useState("write");
+  const [currentBlogs, setCurrentBlogs] = React.useState([]);
+  React.useEffect(() => {
+    (async () => setCurrentBlogs(await getAllBlogs()))()
+  });
 
   return (
     <AuthBlock>
@@ -74,13 +78,4 @@ export default function ManageBlogs({ currentBlogs }) {
       </footer>
     </AuthBlock>
   )
-}
-
-export async function getStaticProps() {
-  const currentBlogs = await getAllBlogs();
-
-  return {
-    props: { currentBlogs },
-    revalidate: 1
-  }
 }

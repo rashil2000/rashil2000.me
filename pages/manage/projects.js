@@ -7,9 +7,13 @@ import { getAllProjects } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
 import AuthBlock from '../../lib/AuthBlock'
 
-export default function ManageProjects({ currentProjects }) {
+export default function ManageProjects() {
   const [value, setValue] = React.useState("_Start typing..._");
   const [selectedTab, setSelectedTab] = React.useState("write");
+  const [currentProjects, setCurrentProjects] = React.useState([]);
+  React.useEffect(() => {
+    (async () => setCurrentProjects(await getAllProjects()))()
+  });
 
   return (
     <AuthBlock>
@@ -77,13 +81,4 @@ export default function ManageProjects({ currentProjects }) {
       </footer>
     </AuthBlock>
   )
-}
-
-export async function getStaticProps() {
-  const currentProjects = await getAllProjects();
-
-  return {
-    props: { currentProjects },
-    revalidate: 1
-  }
 }
