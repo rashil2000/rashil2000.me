@@ -17,9 +17,17 @@ export default function Authenticate() {
         <div className="abstract">
           <h2>Enter Passphrase</h2>
           <br /><br />
-          <input type="password" style={{ backgroundColor: "transparent", borderTop: "0", borderRight: "0", borderLeft: "0", outline: "0", textAlign: "center" }} onChange={e => setValue(e.target.value)} />
-          <br /><br /><br />
-          <button onClick={() => validate(value)}>Validate</button>
+          <form onSubmit={e => { e.preventDefault(); validate(value) }}>
+            <input
+              type="password"
+              style={{ backgroundColor: "transparent", borderTop: "0", borderRight: "0", borderLeft: "0", outline: "0", textAlign: "center" }}
+              onChange={e => setValue(e.target.value)}
+              required
+              autoFocus
+            />
+            <br /><br /><br />
+            <button>Validate</button>
+          </form>
         </div>
         <br /><br /><br />
       </main>

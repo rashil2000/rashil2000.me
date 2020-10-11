@@ -1,19 +1,21 @@
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
 
-import { getAllBlogs } from '../../lib/utils'
+import { getAllBlogs, itemDeleter, createBlog } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
 import AuthBlock from '../../lib/AuthBlock'
 
 export default function ManageBlogs() {
-  const [value, setValue] = React.useState("_Start typing..._");
-  const [selectedTab, setSelectedTab] = React.useState("write");
-  const [currentBlogs, setCurrentBlogs] = React.useState([]);
-  React.useEffect(() => {
-    (async () => setCurrentBlogs(await getAllBlogs()))()
-  });
+  const [content, setContent] = useState("_Start typing..._");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [slug, setSlug] = useState("");
+  const [selectedTab, setSelectedTab] = useState("write");
+  const [currentBlogs, setCurrentBlogs] = useState([]);
+  useEffect(() => { (async () => setCurrentBlogs(await getAllBlogs()))() }, []);
 
   return (
     <AuthBlock>
@@ -30,33 +32,37 @@ export default function ManageBlogs() {
             <Link href="/blogs/[slug]" as={`/blogs/${blog.slug}`}>
               <a><h5 style={{ margin: "0" }}>{blog.title}</h5></a>
             </Link>
-            <p id="date-style"><span>Edit</span> | <span>Remove</span></p>
+            <p id="date-style"><span style={{ cursor: 'pointer' }} onClick={() => itemDeleter('blogs', blog.slug)}>Remove</span></p>
           </React.Fragment>
         ))}
         <br />
         <div className="abstract"><h2>Create Blog</h2></div>
         <br />
-        <label htmlFor="name" style={{ float: "left" }}>Name:</label>
-        <input type="text" id="name" name="name" style={{ float: "right" }} /><br /><br />
-        <div style={{ clear: "both" }}></div>
-        <label htmlFor="description" style={{ float: "left" }}>Description:</label>
-        <input type="text" id="description" name="description" style={{ float: "right" }} /><br /><br />
-        <div style={{ clear: "both" }}></div>
-        <label htmlFor="slug" style={{ float: "left" }}>Slug:</label>
-        <input type="text" id="slug" name="slug" style={{ float: "right" }} /><br />
-        <div style={{ clear: "both" }}></div>
-        <small>Once set, the slug is immutable.</small>
-        <br /><br />
-        <ReactMde
-          value={value}
-          onChange={setValue}
-          selectedTab={selectedTab}
-          onTabChange={setSelectedTab}
-          generateMarkdownPreview={markdown => Promise.resolve(<ReactMarkdown source={markdown} renderers={{ code: CodeBlock }} />)}
-          minEditorHeight={300}
-        />
+        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim()); }} autoComplete='off'>
+          <label htmlFor="title" style={{ float: "left" }}>Title:</label>
+          <input type="text" id="title" name="title" style={{ float: "right" }} required onChange={e => setTitle(e.target.value)} /><br /><br />
+          <div style={{ clear: "both" }}></div>
+          <label htmlFor="description" style={{ float: "left" }}>Description:</label>
+          <input type="text" id="description" name="description" style={{ float: "right" }} required onChange={e => setDescription(e.target.value)} /><br /><br />
+          <div style={{ clear: "both" }}></div>
+          <label htmlFor="slug" style={{ float: "left" }}>Slug:</label>
+          <input type="text" id="slug" name="slug" style={{ float: "right" }} required onChange={e => setSlug(e.target.value)} /><br />
+          <div style={{ clear: "both" }}></div>
+          <small>Once set, the slug is immutable.</small>
+          <br /><br />
+          <ReactMde
+            value={content}
+            onChange={setContent}
+            selectedTab={selectedTab}
+            onTabChange={setSelectedTab}
+            generateMarkdownPreview={markdown => Promise.resolve(<ReactMarkdown source={markdown} renderers={{ code: CodeBlock }} />)}
+            minEditorHeight={300}
+          />
+          <div className="abstract">
+            <br /><button>Post</button><br /><br />
+          </div>
+        </form>
         <div className="abstract">
-          <br /><button>Post</button><br /><br />
           <h2>Images</h2>
           <small>(this requires the <code>slug</code> field to be set above)</small><br /><br />
           <input type="file" id="imageFile" name="imageFile" style={{ float: "left" }} />
