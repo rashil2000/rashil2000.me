@@ -4,49 +4,49 @@ import Link from 'next/link'
 import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
 
-import { getAllProjects, itemDeleter, createProject, imageUploader } from '../../lib/utils'
-import CodeBlock from '../../lib/CodeBlock'
-import AuthBlock from '../../lib/AuthBlock'
+import { getAllBlogs, itemDeleter, createBlog, imageUploader } from '../../../lib/utils'
+import CodeBlock from '../../../lib/CodeBlock'
+import AuthBlock from '../../../lib/AuthBlock'
 
-export default function ManageProjects() {
+export default function ManageBlogs() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [slug, setSlug] = useState("");
-  const [github, setGithub] = useState("");
+  const [date, setDate] = useState("");
   const [selectedTab, setSelectedTab] = useState("write");
-  const [currentProjects, setCurrentProjects] = useState([]);
+  const [currentBlogs, setCurrentBlogs] = useState([]);
   useEffect(() => {
     const abortController = new AbortController();
-    (async () => setCurrentProjects(await getAllProjects(abortController.signal)))();
+    (async () => setCurrentBlogs(await getAllBlogs(abortController.signal)))();
     return () => abortController.abort(); // cancel pending fetch request on component unmount
   });
 
   return (
     <AuthBlock>
       <Head>
-        <title>Manage Projects - rashil2000</title>
-        <meta name="description" content="Add or remove projects on the site." />
+        <title>Manage Blogs - rashil2000</title>
+        <meta name="description" content="Add or remove blogs on the site." />
       </Head>
 
       <main>
-        <div className="abstract"><h2>Manage Projects</h2></div>
+        <div className="abstract"><h2>Manage Blogs</h2></div>
         <br />
-        {currentProjects.map(project => (
-          <React.Fragment key={project._id}>
-            <Link href="/projects/[slug]" as={`/projects/${project.slug}`}>
-              <a><h5 style={{ margin: "0" }}>{project.title}</h5></a>
+        {currentBlogs.map(blog => (
+          <React.Fragment key={blog._id}>
+            <Link href="/blogs/[slug]" as={`/blogs/${blog.slug}`}>
+              <a><h5 style={{ margin: "0" }}>{blog.title}</h5></a>
             </Link>
-            <p id="date-style"><span style={{ cursor: 'pointer' }} onClick={() => itemDeleter('projects', project.slug, project.title)}>Remove</span></p>
+            <p id="date-style"><span style={{ cursor: 'pointer' }} onClick={() => itemDeleter('blogs', blog.slug, blog.title)}>Remove</span></p>
           </React.Fragment>
         ))}
         <br />
         <div className="abstract">
-          <span id='projectsDeleteSpan'></span>
-          <h2>Create Project</h2>
+          <span id='blogsDeleteSpan'></span>
+          <h2>Create Blog</h2>
         </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createProject(title.trim(), description.trim(), content.trim(), slug.trim(), github.trim()); }} autoComplete='off' id='projectForm'>
+        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim()); }} autoComplete='off' id='blogForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -56,17 +56,17 @@ export default function ManageProjects() {
           <input type="text" id="description" name="description" style={{ float: "right" }} required onChange={e => setDescription(e.target.value)} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
-          <label htmlFor="github" style={{ float: "left" }}>GitHub:&nbsp;</label><label htmlFor="sn-github" className="sidenote-toggle">⋆</label>
-          <input type="text" id="github" name="github" style={{ float: "right" }} required onChange={e => setGithub(e.target.value)} /><br />
+          <label htmlFor="datetime" style={{ float: "left" }}>Date and Time:&nbsp;</label><label htmlFor="sn-datetime" className="sidenote-toggle">⋆</label>
+          <input type="datetime-local" id="datetime" name="datetime" style={{ float: "right" }} required onChange={e => setDate(e.target.value)} /><br />
           <div style={{ clear: "both" }}></div>
-          <input type="checkbox" id="sn-github" className="sidenote-toggle" />
-          <span className="sidenote">Format: username/repository</span><br />
+          <input type="checkbox" id="sn-datetime" className="sidenote-toggle" />
+          <span className="sidenote">Format: yyyy-mm-ddTHH:mm</span><br />
 
           <label htmlFor="slug" style={{ float: "left" }}>Slug:&nbsp;</label><label htmlFor="sn-slug" className="sidenote-toggle">⋆</label>
           <input type="text" id="slug" name="slug" style={{ float: "right" }} required onChange={e => setSlug(e.target.value)} /><br />
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-slug" className="sidenote-toggle" />
-          <span className="sidenote">Once set, the slug is immutable</span>
+          <span className="sidenote">Once set, this is immutable</span>
 
           <br /><br />
           <ReactMde
@@ -80,18 +80,19 @@ export default function ManageProjects() {
 
           <div className="abstract">
             <br /><button>Post</button><br /><br />
-            <span id='projectCreateSpan'></span><br />
+            <span id='blogCreateSpan'></span><br />
           </div>
 
         </form>
-        <form className="abstract" onSubmit={e => { e.preventDefault(); imageUploader('projects', slug.trim(), 'projectImageInput', 'projectImageForm', 'projectImageSpan') }} id='projectImageForm'>
-          <h2>Images</h2>
-          <small>(this requires the <code>slug</code> field to be set above)</small><br /><br />
-          <input type="file" id="projectImageInput" name="imageFile" style={{ float: "left" }} />
+        <form className="abstract" onSubmit={e => { e.preventDefault(); imageUploader('blogs', slug.trim()) }} id='imageForm'>
+          <h2>Images&nbsp;<label htmlFor="sn-image" className="sidenote-toggle">⋆</label></h2>
+          <input type="checkbox" id="sn-image" className="sidenote-toggle" />
+          <span className="sidenote">This requires the <code>slug</code> field to be set above</span><br /><br />
+          <input type="file" id="imageInput" name="imageFile" style={{ float: "left" }} />
           <button style={{ float: "right" }}>Upload</button>
           <div style={{ clear: "both" }}></div>
           <br />
-          <span id='projectImageSpan'></span>
+          <span id='imageSpan'></span>
           <br /><br />
         </form>
       </main>
