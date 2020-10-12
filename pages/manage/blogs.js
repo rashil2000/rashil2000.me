@@ -4,24 +4,29 @@ import Link from 'next/link'
 import ReactMde from 'react-mde'
 import ReactMarkdown from 'react-markdown'
 
-import { getAllBlogs, itemDeleter, createBlog } from '../../lib/utils'
+import { getAllBlogs, itemDeleter, createBlog, imageUploader } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
 import AuthBlock from '../../lib/AuthBlock'
 
 export default function ManageBlogs() {
-  const [content, setContent] = useState("_Start typing..._");
+  const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [slug, setSlug] = useState("");
+  const [date, setDate] = useState("");
   const [selectedTab, setSelectedTab] = useState("write");
   const [currentBlogs, setCurrentBlogs] = useState([]);
-  useEffect(() => { (async () => setCurrentBlogs(await getAllBlogs()))() }, []);
+  useEffect(() => {
+    const abortController = new AbortController();
+    (async () => setCurrentBlogs(await getAllBlogs(abortController.signal)))();
+    return () => abortController.abort(); // cancel pending fetch request on component unmount
+  });
 
   return (
     <AuthBlock>
       <Head>
         <title>Manage Blogs - rashil2000</title>
-        <meta name="description" content="Add, edit or remove blogs on the site." />
+        <meta name="description" content="Add or remove blogs on the site." />
       </Head>
 
       <main>
@@ -32,23 +37,37 @@ export default function ManageBlogs() {
             <Link href="/blogs/[slug]" as={`/blogs/${blog.slug}`}>
               <a><h5 style={{ margin: "0" }}>{blog.title}</h5></a>
             </Link>
-            <p id="date-style"><span style={{ cursor: 'pointer' }} onClick={() => itemDeleter('blogs', blog.slug)}>Remove</span></p>
+            <p id="date-style"><span style={{ cursor: 'pointer' }} onClick={() => itemDeleter('blogs', blog.slug, blog.title)}>Remove</span></p>
           </React.Fragment>
         ))}
         <br />
-        <div className="abstract"><h2>Create Blog</h2></div>
+        <div className="abstract">
+          <span id='blogsDeleteSpan'></span>
+          <h2>Create Blog</h2>
+        </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim()); }} autoComplete='off'>
+        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim()); }} autoComplete='off' id='blogForm'>
+
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required onChange={e => setTitle(e.target.value)} /><br /><br />
           <div style={{ clear: "both" }}></div>
+
           <label htmlFor="description" style={{ float: "left" }}>Description:</label>
           <input type="text" id="description" name="description" style={{ float: "right" }} required onChange={e => setDescription(e.target.value)} /><br /><br />
           <div style={{ clear: "both" }}></div>
-          <label htmlFor="slug" style={{ float: "left" }}>Slug:</label>
+
+          <label htmlFor="datetime" style={{ float: "left" }}>Date and Time:&nbsp;</label><label htmlFor="sn-datetime" className="sidenote-toggle">⋆</label>
+          <input type="datetime-local" id="datetime" name="datetime" style={{ float: "right" }} required onChange={e => setDate(e.target.value)} /><br />
+          <div style={{ clear: "both" }}></div>
+          <input type="checkbox" id="sn-datetime" className="sidenote-toggle" />
+          <span className="sidenote">Format: yyyy-mm-ddTHH:mm</span><br />
+
+          <label htmlFor="slug" style={{ float: "left" }}>Slug:&nbsp;</label><label htmlFor="sn-slug" className="sidenote-toggle">⋆</label>
           <input type="text" id="slug" name="slug" style={{ float: "right" }} required onChange={e => setSlug(e.target.value)} /><br />
           <div style={{ clear: "both" }}></div>
-          <small>Once set, the slug is immutable.</small>
+          <input type="checkbox" id="sn-slug" className="sidenote-toggle" />
+          <span className="sidenote">Once set, the slug is immutable</span>
+
           <br /><br />
           <ReactMde
             value={content}
@@ -58,18 +77,23 @@ export default function ManageBlogs() {
             generateMarkdownPreview={markdown => Promise.resolve(<ReactMarkdown source={markdown} renderers={{ code: CodeBlock }} />)}
             minEditorHeight={300}
           />
+
           <div className="abstract">
             <br /><button>Post</button><br /><br />
+            <span id='blogCreateSpan'></span><br />
           </div>
+
         </form>
-        <div className="abstract">
+        <form className="abstract" onSubmit={e => { e.preventDefault(); imageUploader('blogs', slug.trim(), 'blogImageInput', 'blogImageForm', 'blogImageSpan') }} id='blogImageForm'>
           <h2>Images</h2>
           <small>(this requires the <code>slug</code> field to be set above)</small><br /><br />
-          <input type="file" id="imageFile" name="imageFile" style={{ float: "left" }} />
+          <input type="file" id="blogImageInput" name="imageFile" style={{ float: "left" }} />
           <button style={{ float: "right" }}>Upload</button>
           <div style={{ clear: "both" }}></div>
-          <br /><br /><br />
-        </div>
+          <br />
+          <span id='blogImageSpan'></span>
+          <br /><br />
+        </form>
       </main>
 
       <footer>
