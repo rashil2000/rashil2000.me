@@ -1,30 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Personal Website
 
-## Getting Started
+## [rashil2000.me](https://rashil2000.me/)
 
-First, run the development server:
+### A complete content management system for personal blogs and projects
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+### Key features:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Implemented using [Next.js](https://nextjs.org/) - *The* React Framework for production.
+- Written in pure, functional React JavaScript-XML.
+- Uses [LaTeX.css](https://latex.now.sh/), a purely-CSS class-less library for minimalistic design.
+- Extremely lightweight - with only 3 dependencies (other than [Next.js](https://nextjs.org/) and [LaTeX.css](https://latex.now.sh/)) - for rendering Markdown content.
+- Blazing-fast performance with Server Side Rendering and Incremental Static Generation.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+This project scores a **perfect 100** in all four categories - Performance, Accessibilty, Best Practices and Search Engine Optimization - of Google's [Lighthouse](https://developers.google.com/web/tools/lighthouse/) auditor.
 
-## Learn More
+### Functionality
 
-To learn more about Next.js, take a look at the following resources:
+- Authentication for allowing write access.
+- Add new blogs and projects, writing them in a Markdown editor.
+- Edit current blogs and projects.
+- Remove blogs and projects.
+- Upload images for serving them in Markdown.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The backend of the site is powered by [api.rashil2000.me](https://api.rashil2000.me/) - another personal project of mine - written in [Express.js](https://expressjs.com/) using JavaScript, whose source code can be found [here](https://github.com/rashil2000/api.rashil2000.me).
