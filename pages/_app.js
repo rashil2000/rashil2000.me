@@ -19,10 +19,15 @@ export default function MyApp({ Component, pageProps }) {
       setValue(e.matches ? lightValue : darkValue)
     );
 
-    const pathArray = ['/blogs/[slug]', '/projects/[slug]', '/manage/blogs', '/manage/projects'];
-    const faviconPath = (pathArray.includes(router.pathname))
-      ? '../favicon.ico'
-      : 'favicon.ico';
+    const pathTwoArray = ['/manage/blogs/[slug]', '/manage/projects/[slug]'];
+    const pathOneArray = ['/blogs/[slug]', '/projects/[slug]', '/manage/blogs', '/manage/projects'];
+    let faviconPath;
+    if (pathTwoArray.includes(router.pathname))
+      faviconPath = '../../favicon.ico';
+    else if (pathOneArray.includes(router.pathname))
+      faviconPath = '../favicon.ico';
+    else
+      faviconPath = 'favicon.ico';
 
     return (
       <>

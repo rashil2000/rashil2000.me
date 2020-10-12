@@ -37,7 +37,7 @@ export default function ManageBlogs() {
             <Link href="/blogs/[slug]" as={`/blogs/${blog.slug}`}>
               <a><h5 style={{ margin: "0" }}>{blog.title}</h5></a>
             </Link>
-            <p id="date-style"><span style={{ cursor: 'pointer' }} onClick={() => itemDeleter('blogs', blog.slug, blog.title)}>Remove</span></p>
+            <p id="date-style"><Link href="/manage/blogs/[slug]" as={`/manage/blogs/${blog.slug}`}><a style={{ textDecoration: 'none' }}>Edit</a></Link> | <span style={{ cursor: 'pointer' }} onClick={() => itemDeleter('blogs', blog.slug, blog.title)}>Remove</span></p>
           </React.Fragment>
         ))}
         <br />
@@ -49,21 +49,21 @@ export default function ManageBlogs() {
         <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim()); }} autoComplete='off' id='blogForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
-          <input type="text" id="title" name="title" style={{ float: "right" }} required onChange={e => setTitle(e.target.value)} /><br /><br />
+          <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
           <label htmlFor="description" style={{ float: "left" }}>Description:</label>
-          <input type="text" id="description" name="description" style={{ float: "right" }} required onChange={e => setDescription(e.target.value)} /><br /><br />
+          <input type="text" id="description" name="description" style={{ float: "right" }} required value={description} onChange={e => setDescription(e.target.value)} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
           <label htmlFor="datetime" style={{ float: "left" }}>Date and Time:&nbsp;</label><label htmlFor="sn-datetime" className="sidenote-toggle">⋆</label>
-          <input type="datetime-local" id="datetime" name="datetime" style={{ float: "right" }} required onChange={e => setDate(e.target.value)} /><br />
+          <input type="datetime-local" id="datetime" name="datetime" style={{ float: "right" }} required value={date} onChange={e => setDate(e.target.value)} /><br />
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-datetime" className="sidenote-toggle" />
           <span className="sidenote">Format: yyyy-mm-ddTHH:mm</span><br />
 
           <label htmlFor="slug" style={{ float: "left" }}>Slug:&nbsp;</label><label htmlFor="sn-slug" className="sidenote-toggle">⋆</label>
-          <input type="text" id="slug" name="slug" style={{ float: "right" }} required onChange={e => setSlug(e.target.value)} /><br />
+          <input type="text" id="slug" name="slug" style={{ float: "right" }} required value={slug} onChange={e => setSlug(e.target.value)} /><br />
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-slug" className="sidenote-toggle" />
           <span className="sidenote">Once set, this is immutable</span>
