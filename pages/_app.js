@@ -44,44 +44,31 @@ export default function MyApp({ Component, pageProps }) {
           html img:not(#social-icon){
             filter: ${value};
           }
-          #social-icon {
-            margin: 0 auto;
-            width: 15px;
-          }
-          #no-border {
-            border: 0;
-            text-align: center;
-          }
-          #date-style {
-            text-align: right;
-            font-style: italic;
-            text-decoration: none;
-            margin-bottom: 10px;
-          }
         `}</style>
         <Component {...pageProps} />
       </>
     );
   }
-  return <>
-    <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
-    <br />
-    <style jsx global>{`
-      #social-icon {
-        margin: 0 auto;
-        width: 15px;
-      }
-      #no-border {
-        border: 0;
-        text-align: center;
-      }
-      #date-style {
-        text-align: right;
-        font-style: italic;
-        text-decoration: none;
-        margin-bottom: 10px;
-      }
-  `}</style>
-    <Component {...pageProps} />
-  </>;
+  return (
+    <>
+      <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
+      <br />
+      <style jsx global>{`
+        #social-icon {
+          margin: 0 auto;
+        }
+        #no-border {
+          border: 0;
+          text-align: center;
+        }
+        #date-style {
+          text-align: right;
+          font-style: italic;
+          text-decoration: none;
+          margin-bottom: 10px;
+        }
+      `}</style>
+      <Component {...pageProps} />
+    </>
+  );
 }
