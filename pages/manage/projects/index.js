@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReactMde from 'react-mde'
@@ -16,17 +16,23 @@ export default function ManageProjects() {
   const [github, setGithub] = useState("");
   const [selectedTab, setSelectedTab] = useState("write");
   const [currentProjects, setCurrentProjects] = useState([]);
-  useEffect(() => {
-    const abortController = new AbortController();
-    (async () => setCurrentProjects(await getAllProjects(abortController.signal)))();
-    return () => abortController.abort(); // cancel pending fetch request on component unmount
-  });
+  const [firstLoad, setFirstLoad] = useState(true);
+
+  const contentFetcher = async () => {
+    await new Promise(resolve => setTimeout(resolve, 100));
+    setCurrentProjects(await getAllProjects());
+  };
+
+  if (firstLoad) {
+    contentFetcher();
+    setFirstLoad(false);
+  }
 
   return (
     <AuthBlock>
       <Head>
         <title>Manage Projects - rashil2000</title>
-        <meta name="description" content="Add or remove projects on the site." />
+        <meta name="description" content="Add, edit or remove projects on the site." />
       </Head>
 
       <main>
@@ -37,7 +43,10 @@ export default function ManageProjects() {
             <Link href="/projects/[slug]" as={`/projects/${project.slug}`}>
               <a><h5 style={{ margin: "0" }}>{project.title}</h5></a>
             </Link>
-            <p id="date-style"><Link href="/manage/projects/[slug]" as={`/manage/projects/${project.slug}`}><a style={{ textDecoration: 'none' }}>Edit</a></Link> | <span style={{ cursor: 'pointer' }} onClick={() => itemDeleter('projects', project.slug, project.title)}>Remove</span></p>
+            <p id="date-style">
+              <Link href="/manage/projects/[slug]" as={`/manage/projects/${project.slug}`}><a style={{ textDecoration: 'none' }}>Edit&nbsp;|</a></Link>
+              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('projects', project.slug, project.title); contentFetcher(); }}>&nbsp;Remove</span>
+            </p>
           </React.Fragment>
         ))}
         <br />
@@ -46,7 +55,7 @@ export default function ManageProjects() {
           <h2>Create Project</h2>
         </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createProject(title.trim(), description.trim(), content.trim(), slug.trim(), github.trim()); }} autoComplete='off' id='projectForm'>
+        <form onSubmit={e => { e.preventDefault(); createProject(title.trim(), description.trim(), content.trim(), slug.trim(), github.trim()); contentFetcher(); }} autoComplete='off' id='projectForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -84,7 +93,7 @@ export default function ManageProjects() {
           </div>
 
         </form>
-        <form className="abstract" onSubmit={e => { e.preventDefault(); imageUploader('projects', slug.trim()) }} id='imageForm'>
+        <form className="abstract" onSubmit={e => { e.preventDefault(); imageUploader('projects', slug.trim()); }} id='imageForm'>
           <h2>Images&nbsp;<label htmlFor="sn-image" className="sidenote-toggle">⋆</label></h2>
           <input type="checkbox" id="sn-image" className="sidenote-toggle" />
           <span className="sidenote">This requires the <code>slug</code> field to be set above</span><br /><br />
