@@ -18,13 +18,13 @@ export default function ManageProjects() {
   const [currentProjects, setCurrentProjects] = useState([]);
   const [firstLoad, setFirstLoad] = useState(true);
 
-  const contentFetcher = async () => {
-    await new Promise(resolve => setTimeout(resolve, 100));
+  const contentFetcher = async hold => {
+    await new Promise(resolve => setTimeout(resolve, hold));
     setCurrentProjects(await getAllProjects());
   };
 
   if (firstLoad) {
-    contentFetcher();
+    contentFetcher(100);
     setFirstLoad(false);
   }
 
@@ -45,7 +45,7 @@ export default function ManageProjects() {
             </Link>
             <p id="date-style">
               <Link href="/manage/projects/[slug]" as={`/manage/projects/${project.slug}`}><a style={{ textDecoration: 'none' }}>Edit&nbsp;|</a></Link>
-              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('projects', project.slug, project.title); contentFetcher(); }}>&nbsp;Remove</span>
+              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('projects', project.slug, project.title); contentFetcher(200); }}>&nbsp;Remove</span>
             </p>
           </React.Fragment>
         ))}
@@ -55,7 +55,7 @@ export default function ManageProjects() {
           <h2>Create Project</h2>
         </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createProject(title.trim(), description.trim(), content.trim(), slug.trim(), github.trim()); contentFetcher(); }} autoComplete='off' id='projectForm'>
+        <form onSubmit={e => { e.preventDefault(); createProject(title.trim(), description.trim(), content.trim(), slug.trim(), github.trim()); contentFetcher(1000); }} autoComplete='off' id='projectForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />

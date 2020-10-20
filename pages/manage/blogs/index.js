@@ -18,13 +18,13 @@ export default function ManageBlogs() {
   const [currentBlogs, setCurrentBlogs] = useState([]);
   const [firstLoad, setFirstLoad] = useState(true);
 
-  const contentFetcher = async () => {
-    await new Promise(resolve => setTimeout(resolve, 100));
+  const contentFetcher = async hold => {
+    await new Promise(resolve => setTimeout(resolve, hold));
     setCurrentBlogs(await getAllBlogs());
   };
 
   if (firstLoad) {
-    contentFetcher();
+    contentFetcher(100);
     setFirstLoad(false);
   }
 
@@ -45,7 +45,7 @@ export default function ManageBlogs() {
             </Link>
             <p id="date-style">
               <Link href="/manage/blogs/[slug]" as={`/manage/blogs/${blog.slug}`}><a style={{ textDecoration: 'none' }}>Edit&nbsp;|</a></Link>
-              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('blogs', blog.slug, blog.title); contentFetcher(); }}>&nbsp;Remove</span>
+              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('blogs', blog.slug, blog.title); contentFetcher(200); }}>&nbsp;Remove</span>
             </p>
           </React.Fragment>
         ))}
@@ -55,7 +55,7 @@ export default function ManageBlogs() {
           <h2>Create Blog</h2>
         </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim()); contentFetcher(); }} autoComplete='off' id='blogForm'>
+        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim()); contentFetcher(1000); }} autoComplete='off' id='blogForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />
