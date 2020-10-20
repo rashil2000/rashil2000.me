@@ -51,14 +51,14 @@ export default function Project({ project }) {
 
       <header>
         <p className="author">
-          <a target="_blank" rel="noopener" href={`https://github.com/${project.github}`} style={{ textDecoration: 'none', fontStyle: 'italic' }}>
+          <a target="_blank" rel="noopener" href={`https://github.com/${project.github}`} style={{ fontStyle: 'italic', color: '#1B1818' }}>
             Last commit: {dateString(project.date)}
           </a>
         </p>
       </header>
 
       <main>
-        <ReactMarkdown source={project.content} renderers={{ code: CodeBlock }} />
+        <ReactMarkdown className="markdown-box" source={project.content} renderers={{ code: CodeBlock }} />
         <br /><br />
       </main>
 

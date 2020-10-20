@@ -67,6 +67,10 @@ export default function MyApp({ Component, pageProps }) {
           text-decoration: none;
           margin-bottom: 10px;
         }
+        .markdown-box a {
+          text-decoration: none;
+          color: #4078c0;
+        }
       `}</style>
       <Component {...pageProps} />
     </>

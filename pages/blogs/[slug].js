@@ -56,7 +56,7 @@ export default function Blog({ blog }) {
       </header>
 
       <main>
-        <ReactMarkdown source={blog.content} renderers={{ code: CodeBlock }} />
+        <ReactMarkdown className="markdown-box" source={blog.content} renderers={{ code: CodeBlock }} />
         <br /><br />
       </main>
 
