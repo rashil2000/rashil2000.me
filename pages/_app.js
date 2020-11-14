@@ -5,8 +5,8 @@ import { useRouter } from 'next/router'
 
 export default function MyApp({ Component, pageProps }) {
   if (typeof window !== 'undefined') {
-    const lightValue = 'none';
-    const darkValue = 'invert(1) hue-rotate(180deg)';
+    const lightValue = ['none', 'none', 'none', 'none'];
+    const darkValue = ['hsl(210, 20%, 98%)', 'hsl(0, 5%, 10%)', '#aff', 'invert(1) hue-rotate(180deg)'];
     const router = useRouter();
 
     const [value, setValue] = React.useState(
@@ -37,12 +37,30 @@ export default function MyApp({ Component, pageProps }) {
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
         <style jsx global>{`
-          html {
-            transition: color 300ms, background-color 300ms;
-            filter: ${value};
+          body, .mde-header, input[type="text"], input[type="password"], textarea, button {
+            transition: color 500ms ease-in, background-color 500ms ease-in;
+            color: ${value[0]};
+            background-color: ${value[1]};
           }
-          html img:not(#social-icon){
-            filter: ${value};
+          a,a:visited {
+            transition: color 500ms ease-in, background-color 500ms ease-in;
+            color: ${value[2]};
+          }
+          #social-icon, .svg-icon, pre, kbd {
+            transition: color 500ms ease-in, background-color 500ms ease-in;
+            filter: ${value[3]};
+          }
+          ::-webkit-file-upload-button {
+            transition: color 500ms ease-in, background-color 500ms ease-in;
+            color: ${value[0]};
+            background-color: ${value[1]};
+            padding-top: 4px;
+            padding-bottom: 4px;
+            font-family: inherit;
+          }
+          .markdown-box a {
+            text-decoration: none;
+            color: #08c;
           }
         `}</style>
         <Component {...pageProps} />
@@ -66,10 +84,6 @@ export default function MyApp({ Component, pageProps }) {
           font-style: italic;
           text-decoration: none;
           margin-bottom: 10px;
-        }
-        .markdown-box a {
-          text-decoration: none;
-          color: #4078c0;
         }
       `}</style>
       <Component {...pageProps} />

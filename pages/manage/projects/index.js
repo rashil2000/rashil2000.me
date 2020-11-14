@@ -44,8 +44,9 @@ export default function ManageProjects() {
               <a><h5 style={{ margin: "0" }}>{project.title}</h5></a>
             </Link>
             <p id="date-style">
-              <Link href="/manage/projects/[slug]" as={`/manage/projects/${project.slug}`}><a style={{ textDecoration: 'none' }}>Edit&nbsp;|</a></Link>
-              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('projects', project.slug, project.title); contentFetcher(200); }}>&nbsp;Remove</span>
+              <Link href="/manage/projects/[slug]" as={`/manage/projects/${project.slug}`}><a style={{ textDecoration: 'none' }}>Edit</a></Link>
+              &nbsp;|&nbsp;
+              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('projects', project.slug, project.title); contentFetcher(200); }}>Remove</span>
             </p>
           </React.Fragment>
         ))}

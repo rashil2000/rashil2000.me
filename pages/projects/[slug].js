@@ -51,7 +51,7 @@ export default function Project({ project }) {
 
       <header>
         <p className="author">
-          <a target="_blank" rel="noopener" href={`https://github.com/${project.github}`} style={{ fontStyle: 'italic', color: '#1B1818' }}>
+          <a target="_blank" rel="noopener" href={`https://github.com/${project.github}`} style={{ fontStyle: 'italic' }}>
             Last commit: {dateString(project.date)}
           </a>
         </p>

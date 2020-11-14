@@ -44,8 +44,9 @@ export default function ManageBlogs() {
               <a><h5 style={{ margin: "0" }}>{blog.title}</h5></a>
             </Link>
             <p id="date-style">
-              <Link href="/manage/blogs/[slug]" as={`/manage/blogs/${blog.slug}`}><a style={{ textDecoration: 'none' }}>Edit&nbsp;|</a></Link>
-              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('blogs', blog.slug, blog.title); contentFetcher(200); }}>&nbsp;Remove</span>
+              <Link href="/manage/blogs/[slug]" as={`/manage/blogs/${blog.slug}`}><a style={{ textDecoration: 'none' }}>Edit</a></Link>
+              &nbsp;|&nbsp;
+              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('blogs', blog.slug, blog.title); contentFetcher(200); }}>Remove</span>
             </p>
           </React.Fragment>
         ))}
