@@ -37,7 +37,7 @@ export default function MyApp({ Component, pageProps }) {
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
         <style jsx global>{`
-          body, .mde-header, input[type="text"], input[type="password"], textarea, button {
+          body, .mde-header, input[type="text"], input[type="password"], input[type="datetime-local"], textarea, button {
             transition: color 500ms ease-in, background-color 500ms ease-in;
             color: ${value[0]};
             background-color: ${value[1]};
