@@ -50,6 +50,7 @@ export default function EditProject({ project }) {
   const [title, setTitle] = useState(project.title);
   const [description, setDescription] = useState(project.description);
   const [github, setGithub] = useState(project.github);
+  const [preview, setPreview] = useState(project.preview);
   const [selectedTab, setSelectedTab] = useState("write");
 
   return (
@@ -62,7 +63,7 @@ export default function EditProject({ project }) {
       <main>
         <div className="abstract"><h2>Edit Project</h2></div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); updateProject(title.trim(), description.trim(), content.trim(), project.slug, github.trim()); }} autoComplete='off'>
+        <form onSubmit={e => { e.preventDefault(); updateProject(title.trim(), description.trim(), content.trim(), project.slug, github.trim(), preview.trim()); }} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -77,6 +78,12 @@ export default function EditProject({ project }) {
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-github" className="sidenote-toggle" />
           <span className="sidenote">Format: username/repository</span><br />
+
+          <label htmlFor="preview" style={{ float: "left" }}>Preview Image:&nbsp;</label><label htmlFor="sn-preview" className="sidenote-toggle">⋆</label>
+          <input type="text" id="preview" name="preview" style={{ float: "right" }} value={preview} onChange={e => setPreview(e.target.value)} /><br />
+          <div style={{ clear: "both" }}></div>
+          <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
+          <span className="sidenote">URL for link preview. Optional</span><br />
 
           <br />
           <ReactMde

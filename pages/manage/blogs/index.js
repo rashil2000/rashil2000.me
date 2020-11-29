@@ -14,6 +14,7 @@ export default function ManageBlogs() {
   const [description, setDescription] = useState("");
   const [slug, setSlug] = useState("");
   const [date, setDate] = useState("");
+  const [preview, setPreview] = useState("");
   const [selectedTab, setSelectedTab] = useState("write");
   const [currentBlogs, setCurrentBlogs] = useState([]);
   const [currentImages, setCurrentImages] = useState({ children: [] });
@@ -63,7 +64,7 @@ export default function ManageBlogs() {
           <h2>Create Blog</h2>
         </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim()); contentFetcher(1000); }} autoComplete='off' id='blogForm'>
+        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim(), preview.trim()); contentFetcher(1000); }} autoComplete='off' id='blogForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -83,7 +84,13 @@ export default function ManageBlogs() {
           <input type="text" id="slug" name="slug" style={{ float: "right" }} required value={slug} onChange={e => setSlug(e.target.value)} /><br />
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-slug" className="sidenote-toggle" />
-          <span className="sidenote">Once set, this is immutable</span>
+          <span className="sidenote">Once set, this is immutable</span><br />
+
+          <label htmlFor="preview" style={{ float: "left" }}>Preview Image:&nbsp;</label><label htmlFor="sn-preview" className="sidenote-toggle">⋆</label>
+          <input type="text" id="preview" name="preview" style={{ float: "right" }} value={preview} onChange={e => setPreview(e.target.value)} /><br />
+          <div style={{ clear: "both" }}></div>
+          <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
+          <span className="sidenote">URL for link preview. Optional</span>
 
           <br /><br />
           <ReactMde

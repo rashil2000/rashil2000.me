@@ -46,11 +46,11 @@ export default function EditBlog({ blog }) {
     )
   }
 
-  const convertedDate = (new Date((new Date(blog.date)).toISOString().replace('Z', '-05:30'))).toISOString().slice(0, -1);
   const [content, setContent] = useState(blog.content);
   const [title, setTitle] = useState(blog.title);
   const [description, setDescription] = useState(blog.description);
-  const [date, setDate] = useState(convertedDate);
+  const [date, setDate] = useState((new Date((new Date(blog.date)).toISOString().replace('Z', '-05:30'))).toISOString().slice(0, -1));
+  const [preview, setPreview] = useState(blog.preview);
   const [selectedTab, setSelectedTab] = useState("write");
 
   return (
@@ -63,7 +63,7 @@ export default function EditBlog({ blog }) {
       <main>
         <div className="abstract"><h2>Edit Blog</h2></div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); updateBlog(title.trim(), description.trim(), content.trim(), blog.slug, date.trim()); }} autoComplete='off'>
+        <form onSubmit={e => { e.preventDefault(); updateBlog(title.trim(), description.trim(), content.trim(), blog.slug, date.trim(), preview.trim()); }} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -78,6 +78,12 @@ export default function EditBlog({ blog }) {
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-datetime" className="sidenote-toggle" />
           <span className="sidenote">Format: yyyy-mm-ddTHH:mm</span><br />
+
+          <label htmlFor="preview" style={{ float: "left" }}>Preview Image:&nbsp;</label><label htmlFor="sn-preview" className="sidenote-toggle">⋆</label>
+          <input type="text" id="preview" name="preview" style={{ float: "right" }} value={preview} onChange={e => setPreview(e.target.value)} /><br />
+          <div style={{ clear: "both" }}></div>
+          <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
+          <span className="sidenote">URL for link preview. Optional</span><br />
 
           <br />
           <ReactMde

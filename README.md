@@ -20,6 +20,6 @@ This project scores a **perfect 100** in all four categories - Performance, Acce
 - Add new blogs and projects, writing them in a Markdown editor.
 - Edit current blogs and projects.
 - Remove blogs and projects.
-- Upload images for serving them in Markdown.
+- List, upload or delete images for link previews and Markdown content.
 
 The backend of the site is powered by [api.rashil2000.me](https://api.rashil2000.me/) - another personal project of mine - written in [Express.js](https://expressjs.com/) using JavaScript, whose source code can be found [here](https://github.com/rashil2000/api.rashil2000.me).
