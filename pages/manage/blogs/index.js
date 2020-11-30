@@ -41,6 +41,7 @@ export default function ManageBlogs() {
       <Head>
         <title>Manage Blogs - rashil2000</title>
         <meta name="description" content="Add, edit or remove blogs on the site." />
+        <meta property="og:image" content={`${baseUrl}/images/meta/blog.png`} />
       </Head>
 
       <main>

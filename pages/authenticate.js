@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { validate } from '../lib/utils'
+import { baseUrl, validate } from '../lib/utils'
 
 export default function Authenticate() {
   const [value, setValue] = React.useState('');
@@ -11,6 +11,7 @@ export default function Authenticate() {
       <Head>
         <title>Authenticate - rashil2000</title>
         <meta name="description" content="Enter Passphrase" />
+        <meta property="og:image" content={`${baseUrl}/images/meta/authenticate.png`} />
       </Head>
 
       <main>

@@ -47,6 +47,7 @@ export default function Project({ project }) {
       <Head>
         <title>{project.title} - rashil2000</title>
         <meta name="description" content={project.description} />
+        <meta property="og:image" content={project.preview} />
       </Head>
 
       <header>
@@ -76,20 +77,16 @@ export default function Project({ project }) {
   )
 }
 
-export async function getStaticPaths() {
-  const paths = await getSlugPaths('projects');
-
-  return {
-    paths,
+export const getStaticPaths = async () => (
+  {
+    paths: await getSlugPaths('projects'),
     fallback: true
   }
-}
+);
 
-export async function getStaticProps(context) {
-  const project = await getProject(context.params.slug);
-
-  return {
-    props: { project },
+export const getStaticProps = async context => (
+  {
+    props: { project: await getProject(context.params.slug) },
     revalidate: 1
   }
-}
+);

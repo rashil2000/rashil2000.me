@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
+import { baseUrl } from '../../lib/utils';
 import AuthBlock from '../../lib/AuthBlock'
 
 export default function Manage() {
@@ -9,6 +10,7 @@ export default function Manage() {
       <Head>
         <title>Manage - rashil2000</title>
         <meta name="description" content="Manage content on the site" />
+        <meta property="og:image" content={`${baseUrl}/images/meta/manage.png`} />
       </Head>
 
       <main>

@@ -41,6 +41,7 @@ export default function ManageProjects() {
       <Head>
         <title>Manage Projects - rashil2000</title>
         <meta name="description" content="Add, edit or remove projects on the site." />
+        <meta property="og:image" content={`${baseUrl}/images/meta/project.png`} />
       </Head>
 
       <main>

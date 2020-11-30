@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { dateString } from '../lib/utils'
+import { baseUrl, dateString } from '../lib/utils'
 
 export default function Home() {
   return (
@@ -10,6 +10,7 @@ export default function Home() {
         <title>rashil2000 - Rashil Gandhi</title>
         <meta name="description" content="Gamer. Editor. Programmer." />
         <meta name="keywords" content="Rashil Gandhi, Rashil gandhi, rashil Gandhi, rashil gandhi, Rashil2000, rashil2000, RashilGandhi2000, rashilgandhi2000" />
+        <meta property="og:image" content={`${baseUrl}/images/meta/main.png`} />
       </Head>
 
       <header>

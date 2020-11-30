@@ -58,6 +58,7 @@ export default function EditBlog({ blog }) {
       <Head>
         <title>{`Edit blog '${blog.title}' - rashil2000`}</title>
         <meta name="description" content={`Edit blog '${blog.title}'`} />
+        <meta property="og:image" content={blog.preview} />
       </Head>
 
       <main>
@@ -117,20 +118,16 @@ export default function EditBlog({ blog }) {
   )
 }
 
-export async function getStaticPaths() {
-  const paths = await getSlugPaths('blogs');
-
-  return {
-    paths,
+export const getStaticPaths = async () => (
+  {
+    paths: await getSlugPaths('blogs'),
     fallback: true
   }
-}
+);
 
-export async function getStaticProps(context) {
-  const blog = await getBlog(context.params.slug);
-
-  return {
-    props: { blog },
+export const getStaticProps = async context => (
+  {
+    props: { blog: await getBlog(context.params.slug) },
     revalidate: 1
   }
-}
+);

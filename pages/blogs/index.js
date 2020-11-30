@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { dateString, getAllBlogs } from '../../lib/utils'
+import { baseUrl, dateString, getAllBlogs } from '../../lib/utils'
 
 export default function Blogs({ blogs }) {
   return (
@@ -10,6 +10,7 @@ export default function Blogs({ blogs }) {
         <title>Blogs - rashil2000</title>
         <meta name="description" content="Random musings." />
         <meta name="keywords" content="Rashil Gandhi Blog, blog rashil gandhi, Rashil2000 Blog, blog rashil2000, RashilGandhi2000 Blog, blog rashilgandhi2000" />
+        <meta property="og:image" content={`${baseUrl}/images/meta/blog.png`} />
       </Head>
 
       <main>
@@ -33,11 +34,9 @@ export default function Blogs({ blogs }) {
   )
 }
 
-export async function getStaticProps() {
-  const blogs = await getAllBlogs();
-
-  return {
-    props: { blogs },
+export const getStaticProps = async () => (
+  {
+    props: { blogs: await getAllBlogs() },
     revalidate: 1
   }
-}
+)
