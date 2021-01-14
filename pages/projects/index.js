@@ -24,7 +24,13 @@ export default function Projects({ projects }) {
             <p id="date-style">{dateString(project.date)}</p>
           </React.Fragment>
         ))}
-        <br /><br /><br />
+        <br />
+        <div className="abstract">
+          <h6 style={{ fontStyle: 'normal' }}>
+            Some other projects that didn't make it here can be found on <a target="_blank" rel="noopener" href="https://rashil2000.github.io">rashil2000.github.io</a>.
+          </h6>
+        </div>
+        <br /><br />
       </main>
 
       <footer>

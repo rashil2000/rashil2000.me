@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ReactMarkdown from 'react-markdown'
+import { DiscussionEmbed } from 'disqus-react'
 
 import { dateString, getSlugPaths, getBlog } from '../../lib/utils'
 import CodeBlock from '../../lib/CodeBlock'
@@ -58,8 +59,20 @@ export default function Blog({ blog }) {
 
       <main>
         <ReactMarkdown className="markdown-box" source={blog.content} renderers={{ code: CodeBlock }} />
-        <br /><br />
+        <br />
       </main>
+
+      <DiscussionEmbed
+        shortname='rashil2000'
+        config={
+          {
+            url: `https://rashil2000.me/blog/${blog.slug}`,
+            identifier: `/blog/${blog.slug}`,
+            title: blog.title,
+          }
+        }
+      />
+      <br/ >
 
       <footer>
         <table id="no-border" style={{ width: "100%" }}>
