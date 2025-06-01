@@ -12,7 +12,6 @@ export default function Manage() {
         <meta name="description" content="Manage content on the site" />
         <meta property="og:image" content={`${baseUrl}/images/meta/manage.png`} />
       </Head>
-
       <main>
         <div className="abstract">
           <h2>Manage content on the site</h2>
@@ -20,8 +19,8 @@ export default function Manage() {
           <table id="no-border" style={{ width: "100%" }}>
             <tbody>
               <tr>
-                <td id="no-border" style={{ width: "50%" }}><Link href="manage/blogs"><a>Blogs</a></Link></td>
-                <td id="no-border" style={{ width: "50%" }}><Link href="manage/projects"><a>Projects</a></Link></td>
+                <td id="no-border" style={{ width: "50%" }}><Link href="manage/blogs">Blogs</Link></td>
+                <td id="no-border" style={{ width: "50%" }}><Link href="manage/projects">Projects</Link></td>
               </tr>
             </tbody>
           </table>
@@ -30,10 +29,9 @@ export default function Manage() {
           <br /><br /><br />
         </div>
       </main>
-
       <footer>
-        <Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link>
+        <Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link>
       </footer>
     </AuthBlock>
-  )
+  );
 }

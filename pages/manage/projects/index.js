@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReactMde from 'react-mde'
@@ -43,17 +43,19 @@ export default function ManageProjects() {
         <meta name="description" content="Add, edit or remove projects on the site." />
         <meta property="og:image" content={`${baseUrl}/images/meta/project.png`} />
       </Head>
-
       <main>
         <div className="abstract"><h2>Manage Projects</h2></div>
         <br />
         {currentProjects.map(project => (
           <React.Fragment key={project._id}>
             <Link href="/projects/[slug]" as={`/projects/${project.slug}`}>
-              <a><h5 style={{ margin: "0" }}>{project.title}</h5></a>
+              <h5 style={{ margin: "0" }}>{project.title}</h5>
             </Link>
             <p id="date-style">
-              <Link href="/manage/projects/[slug]" as={`/manage/projects/${project.slug}`}><a style={{ textDecoration: 'none' }}>Edit</a></Link>
+              <Link
+                href="/manage/projects/[slug]"
+                as={`/manage/projects/${project.slug}`}
+                style={{ textDecoration: 'none' }}>Edit</Link>
               &nbsp;|&nbsp;
               <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('projects', project.slug, project.title); contentFetcher(200); }}>Remove</span>
             </p>
@@ -138,17 +140,16 @@ export default function ManageProjects() {
           <br /><br /><span id='imageSpan'></span><br /><br />
         </form>
       </main>
-
       <footer>
         <table id="no-border" style={{ width: "100%" }}>
           <tbody>
             <tr>
-              <td id="no-border" style={{ width: "50%" }}><Link href="/manage"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></a></Link></td>
-              <td id="no-border" style={{ width: "50%" }}><Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link></td>
+              <td id="no-border" style={{ width: "50%" }}><Link href="/manage"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></Link></td>
+              <td id="no-border" style={{ width: "50%" }}><Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link></td>
             </tr>
           </tbody>
         </table>
       </footer>
     </AuthBlock>
-  )
+  );
 }

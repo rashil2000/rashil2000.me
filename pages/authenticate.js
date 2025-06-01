@@ -1,3 +1,4 @@
+import React from "react"
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -13,7 +14,6 @@ export default function Authenticate() {
         <meta name="description" content="Enter Passphrase" />
         <meta property="og:image" content={`${baseUrl}/images/meta/authenticate.png`} />
       </Head>
-
       <main>
         <div className="abstract">
           <h2>Enter Passphrase</h2>
@@ -32,10 +32,9 @@ export default function Authenticate() {
         </div>
         <br /><br /><br />
       </main>
-
       <footer>
-        <Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link>
+        <Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link>
       </footer>
     </div>
-  )
+  );
 }

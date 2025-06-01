@@ -1,3 +1,4 @@
+import React from "react"
 import Head from 'next/head'
 import Link from 'next/link'
 
@@ -12,14 +13,13 @@ export default function Projects({ projects }) {
         <meta name="keywords" content="Rashil Gandhi Project, project rashil gandhi, Rashil2000 Project, project rashil2000, RashilGandhi2000 Project, project rashilgandhi2000" />
         <meta property="og:image" content={`${baseUrl}/images/meta/project.png`} />
       </Head>
-
       <main>
         <div className="abstract"><h2>Stuff that's (seemingly) cool</h2></div>
         <br />
         {projects.map(project => (
           <React.Fragment key={project._id}>
             <Link href="/projects/[slug]" as={`/projects/${project.slug}`}>
-              <a><h5 style={{ margin: "0" }}>{project.title}</h5></a>
+              <h5 style={{ margin: "0" }}>{project.title}</h5>
             </Link>
             <p id="date-style">{dateString(project.date)}</p>
           </React.Fragment>
@@ -32,12 +32,11 @@ export default function Projects({ projects }) {
         </div>
         <br /><br />
       </main>
-
       <footer>
-        <Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link>
+        <Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link>
       </footer>
     </div>
-  )
+  );
 }
 
 export const getStaticProps = async () => (

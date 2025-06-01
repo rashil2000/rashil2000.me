@@ -1,3 +1,4 @@
+import React from "react"
 import 'latex.css'
 import 'react-mde/lib/styles/css/react-mde-all.css'
 import Head from 'next/head'

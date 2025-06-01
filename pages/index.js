@@ -12,7 +12,6 @@ export default function Home() {
         <meta name="keywords" content="Rashil Gandhi, Rashil gandhi, rashil Gandhi, rashil gandhi, Rashil2000, rashil2000, RashilGandhi2000, rashilgandhi2000" />
         <meta property="og:image" content={`${baseUrl}/images/meta/main.png`} />
       </Head>
-
       <header>
 
         <p className="author">
@@ -21,7 +20,6 @@ export default function Home() {
           <i>{dateString()}</i>
         </p>
       </header>
-
       <main>
         <div className="abstract">
           <br />
@@ -44,19 +42,18 @@ export default function Home() {
         </table>
         <br /><br /><br />
       </main>
-
       <footer>
         <table id="no-border" style={{ width: "100%" }}>
           <tbody>
             <tr>
               <td id="no-border" style={{ width: "25%" }}><a href="resume.pdf"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Résumé</p></a></td>
-              <td id="no-border" style={{ width: "25%" }}><Link href="blogs"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Blogs</p></a></Link></td>
-              <td id="no-border" style={{ width: "25%" }}><Link href="projects"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Projects</p></a></Link></td>
-              <td id="no-border" style={{ width: "25%" }}><Link href="manage"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></a></Link></td>
+              <td id="no-border" style={{ width: "25%" }}><Link href="blogs"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Blogs</p></Link></td>
+              <td id="no-border" style={{ width: "25%" }}><Link href="projects"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Projects</p></Link></td>
+              <td id="no-border" style={{ width: "25%" }}><Link href="manage"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></Link></td>
             </tr>
           </tbody>
         </table>
       </footer>
     </div>
-  )
+  );
 }

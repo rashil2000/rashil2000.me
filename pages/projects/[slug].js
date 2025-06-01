@@ -18,7 +18,6 @@ export default function Project({ project }) {
           <title>Loading... - rashil2000</title>
           <meta name="description" content="Building page..." />
         </Head>
-
         <main>
           <div className="abstract">
             <h2>Loading...</h2>
@@ -28,19 +27,18 @@ export default function Project({ project }) {
           </div>
           <br /><br />
         </main>
-
         <footer>
           <table id="no-border" style={{ width: "100%" }}>
             <tbody>
               <tr>
-                <td id="no-border" style={{ width: "50%" }}><Link href="/projects"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Projects</p></a></Link></td>
-                <td id="no-border" style={{ width: "50%" }}><Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link></td>
+                <td id="no-border" style={{ width: "50%" }}><Link href="/projects"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Projects</p></Link></td>
+                <td id="no-border" style={{ width: "50%" }}><Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link></td>
               </tr>
             </tbody>
           </table>
         </footer>
       </div>
-    )
+    );
   }
 
   return (
@@ -50,7 +48,6 @@ export default function Project({ project }) {
         <meta name="description" content={project.description} />
         <meta property="og:image" content={project.preview} />
       </Head>
-
       <header>
         <p className="author">
           <a target="_blank" rel="noopener" href={`https://github.com/${project.github}`} style={{ fontStyle: 'italic' }}>
@@ -58,12 +55,10 @@ export default function Project({ project }) {
           </a>
         </p>
       </header>
-
       <main>
         <ReactMarkdown className="markdown-box" source={project.content} renderers={{ code: CodeBlock }} />
         <br />
       </main>
-
       <DiscussionEmbed
         shortname='rashil2000'
         config={
@@ -75,19 +70,18 @@ export default function Project({ project }) {
         }
       />
       <br/ >
-
       <footer>
         <table id="no-border" style={{ width: "100%" }}>
           <tbody>
             <tr>
-              <td id="no-border" style={{ width: "50%" }}><Link href="/projects"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Projects</p></a></Link></td>
-              <td id="no-border" style={{ width: "50%" }}><Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link></td>
+              <td id="no-border" style={{ width: "50%" }}><Link href="/projects"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Projects</p></Link></td>
+              <td id="no-border" style={{ width: "50%" }}><Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link></td>
             </tr>
           </tbody>
         </table>
       </footer>
     </div>
-  )
+  );
 }
 
 export const getStaticPaths = async () => (

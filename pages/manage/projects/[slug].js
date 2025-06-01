@@ -20,7 +20,6 @@ export default function EditProject({ project }) {
           <title>Loading... - rashil2000</title>
           <meta name="description" content="Building page..." />
         </Head>
-
         <main>
           <div className="abstract">
             <h2>Loading...</h2>
@@ -30,20 +29,19 @@ export default function EditProject({ project }) {
           </div>
           <br /><br />
         </main>
-
         <footer>
           <table id="no-border" style={{ width: "100%" }}>
             <tbody>
               <tr>
-                <td id="no-border" style={{ width: "34%" }}><Link href="/manage/projects"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage Projects</p></a></Link></td>
-                <td id="no-border" style={{ width: "33%" }}><Link href="/manage"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></a></Link></td>
-                <td id="no-border" style={{ width: "33%" }}><Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link></td>
+                <td id="no-border" style={{ width: "34%" }}><Link href="/manage/projects"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage Projects</p></Link></td>
+                <td id="no-border" style={{ width: "33%" }}><Link href="/manage"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></Link></td>
+                <td id="no-border" style={{ width: "33%" }}><Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link></td>
               </tr>
             </tbody>
           </table>
         </footer>
       </AuthBlock>
-    )
+    );
   }
 
   const [content, setContent] = useState(project.content);
@@ -60,7 +58,6 @@ export default function EditProject({ project }) {
         <meta name="description" content={`Edit project '${project.title}'`} />
         <meta property="og:image" content={project.preview} />
       </Head>
-
       <main>
         <div className="abstract"><h2>Edit Project</h2></div>
         <br />
@@ -102,20 +99,19 @@ export default function EditProject({ project }) {
 
         </form>
       </main>
-
       <footer>
         <table id="no-border" style={{ width: "100%" }}>
           <tbody>
             <tr>
-              <td id="no-border" style={{ width: "34%" }}><Link href="/manage/projects"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage Projects</p></a></Link></td>
-              <td id="no-border" style={{ width: "33%" }}><Link href="/manage"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></a></Link></td>
-              <td id="no-border" style={{ width: "33%" }}><Link href="/"><a><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></a></Link></td>
+              <td id="no-border" style={{ width: "34%" }}><Link href="/manage/projects"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage Projects</p></Link></td>
+              <td id="no-border" style={{ width: "33%" }}><Link href="/manage"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Manage</p></Link></td>
+              <td id="no-border" style={{ width: "33%" }}><Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link></td>
             </tr>
           </tbody>
         </table>
       </footer>
     </AuthBlock>
-  )
+  );
 }
 
 export const getStaticPaths = async () => (
