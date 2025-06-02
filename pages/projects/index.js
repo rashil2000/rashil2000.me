@@ -2,7 +2,8 @@ import React from "react"
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { baseUrl, dateString, getAllProjects } from '../../lib/utils'
+import { baseUrl, dateString } from '../../lib/utils'
+import { getAllProjects } from "../../services/ProjectService";
 
 export default function Projects({ projects }) {
   return (

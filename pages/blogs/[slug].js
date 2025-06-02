@@ -5,7 +5,8 @@ import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from 'rehype-starry-night'
 import { DiscussionEmbed } from 'disqus-react'
 
-import { dateString, getSlugPaths, getBlog } from '../../lib/utils'
+import { dateString } from '../../lib/utils'
+import { getBlog, getBlogSlugPaths } from "../../services/BlogService";
 
 export default function Blog({ blog }) {
   const router = useRouter()
@@ -44,13 +45,13 @@ export default function Blog({ blog }) {
   return (
     <div>
       <Head>
-        <title>{blog.title} - rashil2000</title>
+        <title>{`${blog.title} - rashil2000`}</title>
         <meta name="description" content={blog.description} />
         <meta property="og:image" content={blog.preview} />
       </Head>
       <header>
         <p className="author">
-          <i>Posted: {dateString(blog.date)}</i>
+          <i>{`Posted: ${dateString(blog.date)}`}</i>
         </p>
       </header>
       <main id="markdown-box">
@@ -84,7 +85,7 @@ export default function Blog({ blog }) {
 
 export const getStaticPaths = async () => (
   {
-    paths: await getSlugPaths('blogs'),
+    paths: await getBlogSlugPaths(),
     fallback: true
   }
 );

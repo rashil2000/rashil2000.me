@@ -6,7 +6,7 @@ import ReactMde from 'react-mde'
 import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
-import { updateBlog, getSlugPaths, getBlog } from '../../../lib/utils'
+import { updateBlog, getBlogSlugPaths, getBlog } from "../../../services/BlogService";
 import AuthBlock from '../../../lib/AuthBlock'
 
 export default function EditBlog({ blog }) {
@@ -116,7 +116,7 @@ export default function EditBlog({ blog }) {
 
 export const getStaticPaths = async () => (
   {
-    paths: await getSlugPaths('blogs'),
+    paths: await getBlogSlugPaths(),
     fallback: true
   }
 );
