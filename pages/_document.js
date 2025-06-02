@@ -5,7 +5,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head />
-        <body>
+        <body className="latex-dark-auto">
           <Main />
           <NextScript />
         </body>

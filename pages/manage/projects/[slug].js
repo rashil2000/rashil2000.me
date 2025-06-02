@@ -3,10 +3,10 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import ReactMde from 'react-mde'
-import ReactMarkdown from 'react-markdown'
+import { MarkdownHooks } from 'react-markdown'
+import rehypeStarryNight from "rehype-starry-night";
 
 import { updateProject, getSlugPaths, getProject } from '../../../lib/utils'
-import CodeBlock from '../../../lib/CodeBlock'
 import AuthBlock from '../../../lib/AuthBlock'
 
 export default function EditProject({ project }) {
@@ -89,7 +89,7 @@ export default function EditProject({ project }) {
             onChange={setContent}
             selectedTab={selectedTab}
             onTabChange={setSelectedTab}
-            generateMarkdownPreview={markdown => Promise.resolve(<ReactMarkdown source={markdown} renderers={{ code: CodeBlock }} />)}
+            generateMarkdownPreview={markdown => Promise.resolve(<MarkdownHooks children={markdown} rehypePlugins={[rehypeStarryNight]}/>)}
             minEditorHeight={300}
           />
 

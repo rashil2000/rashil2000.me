@@ -1,6 +1,7 @@
 import React from "react"
 import 'latex.css'
 import 'react-mde/lib/styles/css/react-mde-all.css'
+import '@wooorm/starry-night/style/both'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -38,8 +39,10 @@ export default function MyApp({ Component, pageProps }) {
         <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
         <br />
         <style jsx global>{`
-          body, .mde-header, input[type="text"], input[type="password"], input[type="datetime-local"], textarea, button {
+          body, pre, kbd {
             transition: color 500ms ease-in, background-color 500ms ease-in;
+          }  
+          .mde-header, input[type="text"], input[type="password"], input[type="datetime-local"], textarea, button {
             color: ${value[0]};
             background-color: ${value[1]};
           }
@@ -47,7 +50,7 @@ export default function MyApp({ Component, pageProps }) {
             transition: color 500ms ease-in, background-color 500ms ease-in;
             color: ${value[2]};
           }
-          #social-icon, .svg-icon, pre, kbd {
+          #social-icon, .svg-icon {
             transition: color 500ms ease-in, background-color 500ms ease-in;
             filter: ${value[3]};
           }
@@ -59,7 +62,7 @@ export default function MyApp({ Component, pageProps }) {
             padding-bottom: 4px;
             font-family: inherit;
           }
-          .markdown-box a {
+          #markdown-box a {
             text-decoration: none;
             color: #08c;
           }

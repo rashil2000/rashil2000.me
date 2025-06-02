@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import ReactMarkdown from 'react-markdown'
+import { MarkdownHooks } from 'react-markdown'
+import rehypeStarryNight from "rehype-starry-night";
 import { DiscussionEmbed } from 'disqus-react'
 
 import { dateString, getSlugPaths, getProject } from '../../lib/utils'
-import CodeBlock from '../../lib/CodeBlock'
 
 export default function Project({ project }) {
   const router = useRouter()
@@ -56,7 +56,7 @@ export default function Project({ project }) {
         </p>
       </header>
       <main>
-        <ReactMarkdown className="markdown-box" source={project.content} renderers={{ code: CodeBlock }} />
+        <MarkdownHooks id="markdown-box" children={project.content} rehypePlugins={[rehypeStarryNight]}/>
         <br />
       </main>
       <DiscussionEmbed
@@ -69,7 +69,7 @@ export default function Project({ project }) {
           }
         }
       />
-      <br/ >
+      <br />
       <footer>
         <table id="no-border" style={{ width: "100%" }}>
           <tbody>
