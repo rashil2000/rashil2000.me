@@ -53,8 +53,8 @@ export default function Blog({ blog }) {
           <i>Posted: {dateString(blog.date)}</i>
         </p>
       </header>
-      <main>
-        <MarkdownHooks id="markdown-box" children={blog.content} rehypePlugins={[rehypeStarryNight]}/>
+      <main id="markdown-box">
+        <MarkdownHooks children={blog.content} rehypePlugins={[rehypeStarryNight]}/>
         <br />
       </main>
       <DiscussionEmbed

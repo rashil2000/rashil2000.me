@@ -55,8 +55,8 @@ export default function Project({ project }) {
           </a>
         </p>
       </header>
-      <main>
-        <MarkdownHooks id="markdown-box" children={project.content} rehypePlugins={[rehypeStarryNight]}/>
+      <main id="markdown-box">
+        <MarkdownHooks children={project.content} rehypePlugins={[rehypeStarryNight]}/>
         <br />
       </main>
       <DiscussionEmbed

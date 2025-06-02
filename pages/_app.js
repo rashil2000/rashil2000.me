@@ -62,6 +62,9 @@ export default function MyApp({ Component, pageProps }) {
             padding-bottom: 4px;
             font-family: inherit;
           }
+          #markdown-box p {
+            text-align: justify;
+          }
           #markdown-box a {
             text-decoration: none;
             color: #08c;
