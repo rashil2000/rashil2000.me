@@ -2,7 +2,8 @@ import React from "react"
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { baseUrl, dateString, getAllBlogs } from '../../lib/utils'
+import { baseUrl, dateString } from '../../lib/utils'
+import { getAllBlogs } from "../../services/BlogService";
 
 export default function Blogs({ blogs }) {
   return (

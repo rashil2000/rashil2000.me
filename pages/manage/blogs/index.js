@@ -5,8 +5,10 @@ import ReactMde from 'react-mde'
 import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
-import { baseUrl, getAllBlogs, itemDeleter, createBlog, imageLister, imageUploader, imageDeleter } from '../../../lib/utils'
+import { baseUrl } from '../../../lib/utils'
 import AuthBlock from '../../../lib/AuthBlock'
+import {createBlog, deleteBlog, getAllBlogs} from "../../../services/BlogService";
+import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
 
 export default function ManageBlogs() {
   const [content, setContent] = useState("");
@@ -57,7 +59,7 @@ export default function ManageBlogs() {
                 as={`/manage/blogs/${blog.slug}`}
                 style={{ textDecoration: 'none' }}>Edit</Link>
               &nbsp;|&nbsp;
-              <span style={{ cursor: 'pointer' }} onClick={() => { itemDeleter('blogs', blog.slug, blog.title); contentFetcher(200); }}>Remove</span>
+              <span style={{ cursor: 'pointer' }} onClick={() => { deleteBlog(blog.slug, blog.title); contentFetcher(200); }}>Remove</span>
             </p>
           </React.Fragment>
         ))}

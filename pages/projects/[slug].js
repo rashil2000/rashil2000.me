@@ -5,7 +5,8 @@ import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 import { DiscussionEmbed } from 'disqus-react'
 
-import { dateString, getSlugPaths, getProject } from '../../lib/utils'
+import { dateString } from '../../lib/utils'
+import { getProject, getProjectSlugPaths } from "../../services/ProjectService";
 
 export default function Project({ project }) {
   const router = useRouter()
@@ -44,14 +45,14 @@ export default function Project({ project }) {
   return (
     <div>
       <Head>
-        <title>{project.title} - rashil2000</title>
+        <title>{`${project.title} - rashil2000`}</title>
         <meta name="description" content={project.description} />
         <meta property="og:image" content={project.preview} />
       </Head>
       <header>
         <p className="author">
           <a target="_blank" rel="noopener" href={`https://github.com/${project.github}`} style={{ fontStyle: 'italic' }}>
-            Last commit: {dateString(project.date)}
+            {`Last commit: ${dateString(project.date)}`}
           </a>
         </p>
       </header>
@@ -86,7 +87,7 @@ export default function Project({ project }) {
 
 export const getStaticPaths = async () => (
   {
-    paths: await getSlugPaths('projects'),
+    paths: await getProjectSlugPaths(),
     fallback: true
   }
 );
