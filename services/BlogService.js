@@ -1,24 +1,9 @@
-import dbConnect from "../lib/dbConnect";
-import Blog from "../models/Blog";
-import { dateString, sortByDate } from "../lib/utils";
-
-export const getBlog = async slug => {
-    await dbConnect();
-    const blog = await Blog.findOne({slug});
-    return JSON.parse(JSON.stringify(blog));
-}
+import { baseUrl, dateString, sortByDate } from "../lib/utils";
 
 export const getAllBlogs = async () => {
-    await dbConnect();
-    const blogs = await Blog.find({});
-    return sortByDate(JSON.parse(JSON.stringify(blogs)));
-}
-
-export const getBlogSlugPaths = async () => {
-    const blogs = await getAllBlogs();
-    return blogs.map(item => {
-        return {params: {slug: item.slug}}
-    });
+    const res = await fetch(`${baseUrl}/api/blogs`);
+    const blogs = await res.json();
+    return sortByDate(blogs);
 }
 
 export const createBlog = async (title, description, content, slug, date, preview) => {
@@ -34,13 +19,17 @@ export const createBlog = async (title, description, content, slug, date, previe
         return null;
     }
 
-    // TODO: authorize
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-    await dbConnect();
     try {
-        const result = await Blog.create(
-            { title, description, content, slug, date, preview }
-        );
+        const response = await fetch(`${baseUrl}/api/blogs`, {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify({ title, description, content, slug, date, preview }),
+            redirect: 'follow'
+        });
+        const result = await response.json();
         if (result._id) {
             document.getElementById('blogCreateSpan').innerHTML = `Created blog "${result.title}".`;
             document.getElementById('blogForm').reset();
@@ -64,18 +53,21 @@ export const updateBlog = async (title, description, content, slug, date, previe
         return null;
     }
 
-    // TODO: authorize
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-    await dbConnect();
     try {
-        const result = Blog.findOneAndUpdate(
-            { slug },
-            { $set: { title, description, content, date, preview } },
-            { new: true }
-        );
-        if (result._id)
-            location = '/manage/blogs';
-        else
+        const response = await fetch(`${baseUrl}/api/blogs/${slug}`, {
+            method: 'PUT',
+            headers: myHeaders,
+            body: JSON.stringify({ title, description, content, date, preview }),
+            redirect: 'follow'
+        });
+        const result = await response.json();
+        if (result._id) {
+            alert(`Updated blog "${result.title}" successfully.`)
+            history.back();
+        } else
             alert(JSON.stringify(result));
     } catch (err) {
         return alert('Error:\n' + JSON.stringify(err));
@@ -86,11 +78,12 @@ export const deleteBlog = async (slug, title) => {
     if (!confirm(`Are you sure you want to remove "${title}" from blogs?`))
         return null;
 
-    // TODO: authorize
-
-    await dbConnect();
     try {
-        const result = await Blog.findOneAndDelete({ slug });
+        const response = await fetch(`${baseUrl}/api/blogs/${slug}`, {
+            method: 'DELETE',
+            redirect: 'follow'
+        });
+        const result = await response.json();
         if (result._id)
             document.getElementById(`blogsDeleteSpan`).innerHTML = `Removed "${result.title}" from blogs.`;
         else

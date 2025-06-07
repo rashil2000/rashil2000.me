@@ -6,8 +6,9 @@ import ReactMde from 'react-mde'
 import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
-import { updateBlog, getBlogSlugPaths, getBlog } from "../../../services/BlogService";
+import { updateBlog } from "../../../services/BlogService";
 import AuthBlock from '../../../lib/AuthBlock'
+import { getBlog, getBlogs } from "../../../lib/utils";
 
 export default function EditBlog({ blog }) {
   const router = useRouter();
@@ -116,7 +117,7 @@ export default function EditBlog({ blog }) {
 
 export const getStaticPaths = async () => (
   {
-    paths: await getBlogSlugPaths(),
+    paths: await getBlogs(true),
     fallback: true
   }
 );

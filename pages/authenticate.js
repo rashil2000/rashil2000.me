@@ -2,8 +2,7 @@ import React from "react"
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { baseUrl } from '../lib/utils'
-import { validate } from "../services/AuthService";
+import { baseUrl, validate } from '../lib/utils'
 
 export default function Authenticate() {
   const [value, setValue] = React.useState('');

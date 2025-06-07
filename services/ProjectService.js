@@ -1,27 +1,11 @@
-import dbConnect from "../lib/dbConnect";
-import Project from "../models/Project";
-import { getLastCommitDate, sortByDate } from "../lib/utils";
-
-export const getProject = async slug => {
-    await dbConnect();
-    let project = await Project.findOne({slug});
-    project.date = await getLastCommitDate(project.github);
-    return JSON.parse(JSON.stringify(project));
-}
+import { baseUrl, getLastCommitDate, sortByDate } from "../lib/utils";
 
 export const getAllProjects = async () => {
-    await dbConnect();
-    let projects = await Project.find({});
+    const res = await fetch(`${baseUrl}/api/projects`);
+    let projects = await res.json();
     for (let item of projects)
         item.date = await getLastCommitDate(item.github);
-    return sortByDate(JSON.parse(JSON.stringify(projects)));
-}
-
-export const getProjectSlugPaths = async () => {
-    const projects = await getAllProjects();
-    return projects.map(item => {
-        return {params: {slug: item.slug}}
-    });
+    return sortByDate(projects);
 }
 
 export const createProject = async (title, description, content, slug, github, preview) => {
@@ -37,13 +21,17 @@ export const createProject = async (title, description, content, slug, github, p
         return null;
     }
 
-    // TODO: authorize
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-    await dbConnect();
     try {
-        const result = await Project.create(
-            { title, description, content, slug, github, preview }
-        );
+        const response = await fetch(`${baseUrl}/api/projects`, {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify({ title, description, content, slug, github, preview }),
+            redirect: 'follow'
+        });
+        const result = await response.json();
         if (result._id) {
             document.getElementById('projectCreateSpan').innerHTML = `Created project "${result.title}".`;
             document.getElementById('projectForm').reset();
@@ -67,17 +55,21 @@ export const updateProject = async (title, description, content, slug, github, p
         return null;
     }
 
-    // TODO: authorize
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-    await dbConnect();
     try {
-        const result = await Project.findOneAndUpdate({ slug },
-            { $set: { title, description, content, github, preview } },
-            { new: true }
-        );
-        if (result._id)
-            location = '/manage/projects';
-        else
+        const response = await fetch(`${baseUrl}/api/projects/${slug}`, {
+            method: 'PUT',
+            headers: myHeaders,
+            body: JSON.stringify({ title, description, content, github, preview }),
+            redirect: 'follow'
+        });
+        const result = await response.json();
+        if (result._id){
+            alert(`Updated project "${result.title}" successfully.`)
+            history.back();
+        } else
             alert(JSON.stringify(result));
     } catch (err) {
         return alert('Error:\n' + JSON.stringify(err));
@@ -88,11 +80,12 @@ export const deleteProject = async (slug, title) => {
     if (!confirm(`Are you sure you want to remove "${title}" from projects?`))
         return null;
 
-    // TODO: authorize
-
-    await dbConnect();
     try {
-        const result = await Project.findOneAndDelete({ slug });
+        const response = await fetch(`${baseUrl}/api/projects/${slug}`, {
+            method: 'DELETE',
+            redirect: 'follow'
+        });
+        const result = await response.json();
         if (result._id)
             document.getElementById(`projectsDeleteSpan`).innerHTML = `Removed "${result.title}" from projects.`;
         else

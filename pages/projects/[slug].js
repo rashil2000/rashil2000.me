@@ -5,8 +5,7 @@ import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 import { DiscussionEmbed } from 'disqus-react'
 
-import { dateString } from '../../lib/utils'
-import { getProject, getProjectSlugPaths } from "../../services/ProjectService";
+import { dateString, getProject, getProjects } from '../../lib/utils'
 
 export default function Project({ project }) {
   const router = useRouter()
@@ -87,7 +86,7 @@ export default function Project({ project }) {
 
 export const getStaticPaths = async () => (
   {
-    paths: await getProjectSlugPaths(),
+    paths: await getProjects(true),
     fallback: true
   }
 );
