@@ -4,6 +4,7 @@ import 'react-mde/lib/styles/css/react-mde-all.css'
 import '@wooorm/starry-night/style/both'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { SessionProvider } from "next-auth/react"
 
 export default function MyApp({ Component, pageProps }) {
   if (typeof window !== 'undefined') {
@@ -32,7 +33,7 @@ export default function MyApp({ Component, pageProps }) {
       faviconPath = 'favicon.ico';
 
     return (
-      <>
+      <SessionProvider>
         <Head>
           <link rel="icon" href={faviconPath} />
         </Head>
@@ -71,11 +72,11 @@ export default function MyApp({ Component, pageProps }) {
           }
         `}</style>
         <Component {...pageProps} />
-      </>
+      </SessionProvider>
     );
   }
   return (
-    <>
+    <SessionProvider>
       <h2 style={{ textAlign: "center", fontFamily: "monospace", fontWeight: "lighter" }}>rashil2000</h2>
       <br />
       <style jsx global>{`
@@ -94,6 +95,6 @@ export default function MyApp({ Component, pageProps }) {
         }
       `}</style>
       <Component {...pageProps} />
-    </>
+    </SessionProvider>
   );
 }

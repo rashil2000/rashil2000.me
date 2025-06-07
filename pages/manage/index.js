@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
+import { signOut } from 'next-auth/react';
 
 import { baseUrl } from '../../lib/utils';
 import AuthBlock from '../../lib/AuthBlock'
@@ -25,7 +26,7 @@ export default function Manage() {
             </tbody>
           </table>
           <br /><br /><br />
-          <button onClick={() => { localStorage.clear(); location.reload(); }}>Invalidate</button>
+          <button onClick={() => signOut()}>Invalidate</button>
           <br /><br /><br />
         </div>
       </main>
