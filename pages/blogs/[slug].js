@@ -5,8 +5,7 @@ import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from 'rehype-starry-night'
 import { DiscussionEmbed } from 'disqus-react'
 
-import { dateString } from '../../lib/utils'
-import { getBlog, getBlogSlugPaths } from "../../services/BlogService";
+import { dateString, getBlog, getBlogs } from '../../lib/utils'
 
 export default function Blog({ blog }) {
   const router = useRouter()
@@ -85,7 +84,7 @@ export default function Blog({ blog }) {
 
 export const getStaticPaths = async () => (
   {
-    paths: await getBlogSlugPaths(),
+    paths: await getBlogs(true),
     fallback: true
   }
 );

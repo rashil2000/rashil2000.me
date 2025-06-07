@@ -2,8 +2,7 @@ import React from "react"
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { baseUrl, dateString } from '../../lib/utils'
-import { getAllBlogs } from "../../services/BlogService";
+import { baseUrl, dateString, getBlogs } from '../../lib/utils'
 
 export default function Blogs({ blogs }) {
   return (
@@ -36,7 +35,7 @@ export default function Blogs({ blogs }) {
 
 export const getStaticProps = async () => (
   {
-    props: { blogs: await getAllBlogs() },
+    props: { blogs: await getBlogs(false) },
     revalidate: 1
   }
 )

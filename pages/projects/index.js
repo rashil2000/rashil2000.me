@@ -2,8 +2,7 @@ import React from "react"
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { baseUrl, dateString } from '../../lib/utils'
-import { getAllProjects } from "../../services/ProjectService";
+import { baseUrl, dateString, getProjects } from '../../lib/utils'
 
 export default function Projects({ projects }) {
   return (
@@ -42,7 +41,7 @@ export default function Projects({ projects }) {
 
 export const getStaticProps = async () => (
   {
-    props: { projects: await getAllProjects() },
+    props: { projects: await getProjects(false) },
     revalidate: 1
   }
 )

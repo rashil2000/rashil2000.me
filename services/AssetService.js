@@ -1,12 +1,10 @@
 import { baseUrl } from "../lib/utils";
 
 export const imageLister = async group => {
-    await refresher();
-
     let myHeaders = new Headers();
     myHeaders.append("Authorization", `bearer ${localStorage.getItem('token')}`);
 
-    const response = await fetch(`${baseUrl}/assets?location=images%2F${group}`, {
+    const response = await fetch(`${baseUrl}/api/assets?location=images%2F${group}`, {
         method: 'GET',
         headers: myHeaders,
         redirect: 'follow'
@@ -25,8 +23,6 @@ export const imageUploader = async (directory, folder) => {
         return null;
     }
 
-    await refresher();
-
     let myHeaders = new Headers();
     myHeaders.append("Authorization", `bearer ${localStorage.getItem('token')}`);
 
@@ -34,7 +30,7 @@ export const imageUploader = async (directory, folder) => {
     formdata.append("uploadedFile", fileInput.files[0]);
 
     try {
-        const response = await fetch(`${baseUrl}/assets?location=images%2F${directory}%2F${folder}`, {
+        const response = await fetch(`${baseUrl}/api/assets?location=images%2F${directory}%2F${folder}`, {
             method: 'POST',
             headers: myHeaders,
             body: formdata,
@@ -52,13 +48,11 @@ export const imageDeleter = async identifier => {
     if (!confirm(`Are you sure you want to remove "${identifier.split('/').slice(3).join('/')}"?`))
         return null;
 
-    await refresher();
-
     let myHeaders = new Headers();
     myHeaders.append("Authorization", `bearer ${localStorage.getItem('token')}`);
 
     try {
-        const response = await fetch(`${baseUrl}/assets?location=${identifier.substr(7)}`, {
+        const response = await fetch(`${baseUrl}/api/assets?location=${identifier.substr(7)}`, {
             method: 'DELETE',
             headers: myHeaders,
             redirect: 'follow'

@@ -6,8 +6,9 @@ import ReactMde from 'react-mde'
 import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
-import { updateProject, getProjectSlugPaths, getProject } from "../../../services/ProjectService";
+import { updateProject } from "../../../services/ProjectService";
 import AuthBlock from '../../../lib/AuthBlock'
+import { getProject, getProjects } from "../../../lib/utils";
 
 export default function EditProject({ project }) {
   const router = useRouter();
@@ -116,7 +117,7 @@ export default function EditProject({ project }) {
 
 export const getStaticPaths = async () => (
   {
-    paths: await getProjectSlugPaths(),
+    paths: await getProjects(true),
     fallback: true
   }
 );
