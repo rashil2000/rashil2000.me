@@ -1,7 +1,7 @@
-import { baseUrl, dateString, sortByDate } from "../lib/utils";
+import { dateString, sortByDate } from "../lib/utils";
 
 export const getAllBlogs = async () => {
-    const res = await fetch(`${baseUrl}/api/blogs`);
+    const res = await fetch(`/api/blogs`);
     const blogs = await res.json();
     return sortByDate(blogs);
 }
@@ -23,7 +23,7 @@ export const createBlog = async (title, description, content, slug, date, previe
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`${baseUrl}/api/blogs`, {
+        const response = await fetch(`/api/blogs`, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({ title, description, content, slug, date, preview }),
@@ -57,7 +57,7 @@ export const updateBlog = async (title, description, content, slug, date, previe
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`${baseUrl}/api/blogs/${slug}`, {
+        const response = await fetch(`/api/blogs/${slug}`, {
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify({ title, description, content, date, preview }),
@@ -79,7 +79,7 @@ export const deleteBlog = async (slug, title) => {
         return null;
 
     try {
-        const response = await fetch(`${baseUrl}/api/blogs/${slug}`, {
+        const response = await fetch(`/api/blogs/${slug}`, {
             method: 'DELETE',
             redirect: 'follow'
         });

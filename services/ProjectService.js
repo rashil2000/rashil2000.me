@@ -1,7 +1,7 @@
-import { baseUrl, getLastCommitDate, sortByDate } from "../lib/utils";
+import { getLastCommitDate, sortByDate } from "../lib/utils";
 
 export const getAllProjects = async () => {
-    const res = await fetch(`${baseUrl}/api/projects`);
+    const res = await fetch(`/api/projects`);
     let projects = await res.json();
     for (let item of projects)
         item.date = await getLastCommitDate(item.github);
@@ -25,7 +25,7 @@ export const createProject = async (title, description, content, slug, github, p
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`${baseUrl}/api/projects`, {
+        const response = await fetch(`/api/projects`, {
             method: 'POST',
             headers: myHeaders,
             body: JSON.stringify({ title, description, content, slug, github, preview }),
@@ -59,7 +59,7 @@ export const updateProject = async (title, description, content, slug, github, p
     myHeaders.append("Content-Type", "application/json");
 
     try {
-        const response = await fetch(`${baseUrl}/api/projects/${slug}`, {
+        const response = await fetch(`/api/projects/${slug}`, {
             method: 'PUT',
             headers: myHeaders,
             body: JSON.stringify({ title, description, content, github, preview }),
@@ -81,7 +81,7 @@ export const deleteProject = async (slug, title) => {
         return null;
 
     try {
-        const response = await fetch(`${baseUrl}/api/projects/${slug}`, {
+        const response = await fetch(`/api/projects/${slug}`, {
             method: 'DELETE',
             redirect: 'follow'
         });
