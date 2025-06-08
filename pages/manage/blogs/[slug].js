@@ -62,7 +62,7 @@ export default function EditBlog({ blog }) {
       <main>
         <div className="abstract"><h2>Edit Blog</h2></div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); updateBlog(title.trim(), description.trim(), content.trim(), blog.slug, date.trim(), preview.trim()); }} autoComplete='off'>
+        <form onSubmit={e => { e.preventDefault(); updateBlog(title.trim(), description.trim(), content.trim(), blog.slug, date.trim(), preview?.trim()); }} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />

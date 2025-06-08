@@ -69,7 +69,7 @@ export default function ManageBlogs() {
           <h2>Create Blog</h2>
         </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim(), preview.trim()); contentFetcher(1000); }} autoComplete='off' id='blogForm'>
+        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim(), preview?.trim()); contentFetcher(1000); }} autoComplete='off' id='blogForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />
