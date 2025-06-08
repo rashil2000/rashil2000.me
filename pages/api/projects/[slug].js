@@ -31,8 +31,14 @@ export default async function handler(req, res) {
                 if (!project) {
                     return res.status(404).json({ message: "Project not found" });
                 }
-                res.status(200).json(project);
-                break;
+                try {
+                    await res.revalidate('/projects')
+                    await res.revalidate(`/projects/${slug}`)
+                    await res.revalidate(`/manage/projects/${slug}`)
+                    return res.status(200).json(project);
+                } catch (err) {
+                    return res.status(500).send('Error revalidating')
+                }
             }
             case "DELETE": {
                 const session = await getServerSession(req, res, authOptions);
@@ -43,8 +49,12 @@ export default async function handler(req, res) {
                 if (!project) {
                     return res.status(404).json({ message: "Project not found" });
                 }
-                res.status(200).json(project);
-                break;
+                try {
+                    await res.revalidate('/projects')
+                    return res.status(200).json(project);
+                } catch (err) {
+                    return res.status(500).send('Error revalidating')
+                }
             }
             default: {
                 res.setHeader("Allow", ["GET", "PUT", "DELETE"]);

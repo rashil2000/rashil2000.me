@@ -21,8 +21,14 @@ export default async function handler(req, res) {
                     return;
                 }
                 const project = await Project.create(req.body);
-                res.status(201).json(project);
-                break;
+                try {
+                    await res.revalidate('/projects')
+                    await res.revalidate(`/projects/${project.slug}`)
+                    await res.revalidate(`/manage/projects/${project.slug}`)
+                    return res.status(201).json(project);
+                } catch (err) {
+                    return res.status(500).send('Error revalidating')
+                }
             }
             case "DELETE": {
                 const session = await getServerSession(req, res, authOptions);
@@ -31,8 +37,12 @@ export default async function handler(req, res) {
                     return;
                 }
                 const resp = await Project.deleteMany({});
-                res.status(200).json(resp);
-                break;
+                try {
+                    await res.revalidate('/projects')
+                    return res.status(200).json(resp);
+                } catch (err) {
+                    return res.status(500).send('Error revalidating')
+                }
             }
             default: {
                 res.setHeader("Allow", ["GET", "POST", "DELETE"]);

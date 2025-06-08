@@ -21,8 +21,14 @@ export default async function handler(req, res) {
           return;
         }
         const blog = await Blog.create(req.body);
-        res.status(201).json(blog);
-        break;
+        try {
+          await res.revalidate('/blogs')
+          await res.revalidate(`/blogs/${blog.slug}`)
+          await res.revalidate(`/manage/blogs/${blog.slug}`)
+          return res.status(201).json(blog);
+        } catch (err) {
+          return res.status(500).send('Error revalidating')
+        }
       }
       case "DELETE": {
         const session = await getServerSession(req, res, authOptions);
@@ -31,8 +37,12 @@ export default async function handler(req, res) {
           return;
         }
         const resp = await Blog.deleteMany({});
-        res.status(200).json(resp);
-        break;
+        try {
+          await res.revalidate('/blogs')
+          return res.status(200).json(resp);
+        } catch (err) {
+          return res.status(500).send('Error revalidating')
+        }
       }
       default: {
         res.setHeader("Allow", ["GET", "POST", "DELETE"]);

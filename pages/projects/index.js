@@ -42,6 +42,5 @@ export default function Projects({ projects }) {
 export const getStaticProps = async () => (
   {
     props: { projects: await getProjects(false) },
-    revalidate: 1
   }
 )

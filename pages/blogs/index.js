@@ -36,6 +36,5 @@ export default function Blogs({ blogs }) {
 export const getStaticProps = async () => (
   {
     props: { blogs: await getBlogs(false) },
-    revalidate: 1
   }
 )
