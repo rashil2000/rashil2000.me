@@ -62,7 +62,7 @@ export default function EditProject({ project }) {
       <main>
         <div className="abstract"><h2>Edit Project</h2></div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); updateProject(title.trim(), description.trim(), content.trim(), project.slug, github.trim(), preview.trim()); }} autoComplete='off'>
+        <form onSubmit={e => { e.preventDefault(); updateProject(title.trim(), description.trim(), content.trim(), project.slug, github.trim(), preview?.trim()); }} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />
