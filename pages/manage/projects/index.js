@@ -116,15 +116,15 @@ export default function ManageProjects() {
 
         <div className="abstract"><h2>Images</h2></div>
         <br />
-        {currentImages.children.map(project => (
+        {currentImages && currentImages.children && currentImages.children.map(project => (
           <React.Fragment key={project.path}>
-            <span style={{ float: "left" }}>{`${project.path.split('/')[3]}/`}</span>
+            <span style={{ float: "left" }}>{project.name}</span>
             <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => { imageDeleter(project.path); imageFetcher(200); }}>Remove all</span>
             <div style={{ clear: "both" }}></div>
             {project.children.map(item => (
               <React.Fragment key={item.path}>
-                <a target="_blank" href={`${baseUrl}/${item.path.substring(7)}`} style={{ float: "left" }}>└ {item.path.split('/')[4]}</a>
-                <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => { imageDeleter(item.path); imageFetcher(200); }}>Remove</span>
+                <a target="_blank" href={item.url} rel="noopener noreferrer" style={{ float: "left" }}>└ {item.name}</a>
+                <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => { imageDeleter(item.url); imageFetcher(200); }}>Remove</span>
                 <div style={{ clear: "both" }}></div>
               </React.Fragment>
             ))}

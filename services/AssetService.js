@@ -1,14 +1,7 @@
-import { baseUrl } from "../lib/utils";
+import { upload } from '@vercel/blob/client';
 
 export const imageLister = async group => {
-    let myHeaders = new Headers();
-    myHeaders.append("Authorization", `bearer ${localStorage.getItem('token')}`);
-
-    const response = await fetch(`${baseUrl}/api/assets?location=images%2F${group}`, {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-    });
+    const response = await fetch(`/api/assets?location=images%2F${group}`);
     return await response.json();
 }
 
@@ -17,49 +10,49 @@ export const imageUploader = async (directory, folder) => {
         alert("Enter a slug.");
         return null;
     }
-    const fileInput = document.getElementById('imageInput');
-    if (!fileInput.files.length) {
+    const fileInput = document.getElementById('imageInput').files[0];
+    if (!fileInput) {
         alert("Upload an image.");
         return null;
     }
 
-    let myHeaders = new Headers();
-    myHeaders.append("Authorization", `bearer ${localStorage.getItem('token')}`);
-
-    let formdata = new FormData();
-    formdata.append("uploadedFile", fileInput.files[0]);
+    const location = `images/${directory}/${folder}`;
+    const pathname = `${location}/${fileInput.name}`;
 
     try {
-        const response = await fetch(`${baseUrl}/api/assets?location=images%2F${directory}%2F${folder}`, {
-            method: 'POST',
-            headers: myHeaders,
-            body: formdata,
-            redirect: 'follow'
+        const result = await upload(pathname, fileInput, {
+            access: 'public',
+            handleUploadUrl: `/api/assets?location=${location}`,
         });
-        const result = await response.json();
-        document.getElementById('imageSpan').innerHTML = `'${result.filename}' uploaded in '${folder}'.`;
+        document.getElementById('imageSpan').innerHTML = `'${result.pathname.split('/').pop()}' uploaded in '${folder}'.`;
         document.getElementById('imageForm').reset();
+        return result;
     } catch (err) {
         return alert('Error:\n' + JSON.stringify(err));
     }
 }
 
 export const imageDeleter = async identifier => {
-    if (!confirm(`Are you sure you want to remove "${identifier.split('/').slice(3).join('/')}"?`))
+    if (!confirm(`Are you sure you want to remove "${identifier.split('/').pop()}"?`))
         return null;
 
-    let myHeaders = new Headers();
-    myHeaders.append("Authorization", `bearer ${localStorage.getItem('token')}`);
+    // The identifier could be a URL from vercel blob, or a path-like string
+    const isVercelUrl = identifier.startsWith('https://');
 
     try {
-        const response = await fetch(`${baseUrl}/api/assets?location=${identifier.substr(7)}`, {
+        const searchParams = new URLSearchParams();
+        if (isVercelUrl) {
+            searchParams.set('url', identifier);
+        } else {
+            searchParams.set('location', identifier);
+        }
+
+        const response = await fetch(`/api/assets?${searchParams.toString()}`, {
             method: 'DELETE',
-            headers: myHeaders,
-            redirect: 'follow'
         });
         const result = await response.json();
         if (result.success)
-            document.getElementById(`imageSpan`).innerHTML = `Removed '${result.location.split('/').slice(3).join('/')}'.`;
+            document.getElementById(`imageSpan`).innerHTML = `Removed '${isVercelUrl ? identifier.split('/').pop() : result.location.split('/').pop()}'.`;
         else
             alert(JSON.stringify(result));
     } catch (err) {
