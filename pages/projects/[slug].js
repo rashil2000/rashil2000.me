@@ -94,6 +94,5 @@ export const getStaticPaths = async () => (
 export const getStaticProps = async context => (
   {
     props: { project: await getProject(context.params.slug) },
-    revalidate: 1
   }
 );

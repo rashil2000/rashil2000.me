@@ -92,6 +92,5 @@ export const getStaticPaths = async () => (
 export const getStaticProps = async context => (
   {
     props: { blog: await getBlog(context.params.slug) },
-    revalidate: 1
   }
 );

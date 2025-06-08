@@ -31,8 +31,14 @@ export default async function handler(req, res) {
         if (!blog) {
           return res.status(404).json({ message: "Blog not found" });
         }
-        res.status(200).json(blog);
-        break;
+        try {
+          await res.revalidate('/blogs')
+          await res.revalidate(`/blogs/${slug}`)
+          await res.revalidate(`/manage/blogs/${slug}`)
+          return res.status(200).json(blog);
+        } catch (err) {
+          return res.status(500).send('Error revalidating')
+        }
       }
       case "DELETE": {
         const session = await getServerSession(req, res, authOptions);
@@ -43,8 +49,12 @@ export default async function handler(req, res) {
         if (!blog) {
           return res.status(404).json({ message: "Blog not found" });
         }
-        res.status(200).json(blog);
-        break;
+        try {
+          await res.revalidate('/blogs')
+          return res.status(200).json(blog);
+        } catch (err) {
+          return res.status(500).send('Error revalidating')
+        }
       }
       default: {
         res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
