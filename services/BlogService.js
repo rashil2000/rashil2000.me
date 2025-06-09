@@ -33,6 +33,7 @@ export const createBlog = async (title, description, content, slug, date, previe
         if (result._id) {
             document.getElementById('blogCreateSpan').innerHTML = `Created blog "${result.title}".`;
             document.getElementById('blogForm').reset();
+            return result;
         } else
             alert(JSON.stringify(result));
     } catch (err) {

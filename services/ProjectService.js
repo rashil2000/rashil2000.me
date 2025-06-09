@@ -35,6 +35,7 @@ export const createProject = async (title, description, content, slug, github, p
         if (result._id) {
             document.getElementById('projectCreateSpan').innerHTML = `Created project "${result.title}".`;
             document.getElementById('projectForm').reset();
+            return result;
         } else
             alert(JSON.stringify(result));
     } catch (err) {

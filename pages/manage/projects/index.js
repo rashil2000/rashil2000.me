@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReactMde from 'react-mde'
@@ -7,7 +7,7 @@ import rehypeStarryNight from "rehype-starry-night";
 
 import { baseUrl } from '../../../lib/utils'
 import AuthBlock from '../../../lib/AuthBlock'
-import {createProject, deleteProject, getAllProjects} from "../../../services/ProjectService";
+import { createProject, deleteProject, getAllProjects } from "../../../services/ProjectService";
 import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
 
 export default function ManageProjects() {
@@ -20,23 +20,41 @@ export default function ManageProjects() {
   const [selectedTab, setSelectedTab] = useState("write");
   const [currentProjects, setCurrentProjects] = useState([]);
   const [currentImages, setCurrentImages] = useState({ children: [] });
-  const [firstLoad, setFirstLoad] = useState(true);
 
-  const contentFetcher = async hold => {
-    await new Promise(resolve => setTimeout(resolve, hold));
-    setCurrentProjects(await getAllProjects());
+  useEffect(() => {
+    getAllProjects().then(setCurrentProjects);
+    imageLister('projects').then(setCurrentImages);
+  }, []);
+
+  const handleProjectDelete = async (slug, title) => {
+    await deleteProject(slug, title);
+    setCurrentProjects(currentProjects.filter(p => p.slug !== slug));
   };
-  const imageFetcher = async hold => {
-    if (typeof window !== 'undefined') {
-      await new Promise(resolve => setTimeout(resolve, hold));
-      setCurrentImages(await imageLister('projects'));
-    }
+
+  const handleProjectCreate = async (e) => {
+    e.preventDefault();
+    const newProject = await createProject(title.trim(), description.trim(), content.trim(), slug.trim(), github.trim(), preview?.trim());
+    if (newProject === null)
+      return;
+    setCurrentProjects([newProject, ...currentProjects]);
+    setTitle('');
+    setDescription('');
+    setContent('');
+    setSlug('');
+    setGithub('');
+    setPreview('');
   };
-  if (firstLoad) {
-    contentFetcher(100);
-    imageFetcher(100);
-    setFirstLoad(false);
-  }
+
+  const handleImageDelete = async (path) => {
+    await imageDeleter(path);
+    imageLister('projects').then(setCurrentImages);
+  };
+
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
+    await imageUploader('projects', slug.trim());
+    imageLister('projects').then(setCurrentImages);
+  };
 
   return (
     <AuthBlock>
@@ -59,7 +77,7 @@ export default function ManageProjects() {
                 as={`/manage/projects/${project.slug}`}
                 style={{ textDecoration: 'none' }}>Edit</Link>
               &nbsp;|&nbsp;
-              <span style={{ cursor: 'pointer' }} onClick={() => { deleteProject(project.slug, project.title); contentFetcher(200); }}>Remove</span>
+              <span style={{ cursor: 'pointer' }} onClick={() => handleProjectDelete(project.slug, project.title)}>Remove</span>
             </p>
           </React.Fragment>
         ))}
@@ -69,7 +87,7 @@ export default function ManageProjects() {
           <h2>Create Project</h2>
         </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createProject(title.trim(), description.trim(), content.trim(), slug.trim(), github.trim(), preview?.trim()); contentFetcher(1000); }} autoComplete='off' id='projectForm'>
+        <form onSubmit={handleProjectCreate} autoComplete='off' id='projectForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -119,12 +137,12 @@ export default function ManageProjects() {
         {currentImages && currentImages.children && currentImages.children.map(project => (
           <React.Fragment key={project.path}>
             <span style={{ float: "left" }}>{project.name}</span>
-            <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => { imageDeleter(project.path); imageFetcher(200); }}>Remove all</span>
+            <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(project.path)}>Remove all</span>
             <div style={{ clear: "both" }}></div>
             {project.children.map(item => (
               <React.Fragment key={item.path}>
                 <a target="_blank" href={baseUrl + "/assets/" + item.pathname} rel="noopener noreferrer" style={{ float: "left" }}>└ {item.name}</a>
-                <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => { imageDeleter(item.url); imageFetcher(200); }}>Remove</span>
+                <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(item.url)}>Remove</span>
                 <div style={{ clear: "both" }}></div>
               </React.Fragment>
             ))}
@@ -132,7 +150,7 @@ export default function ManageProjects() {
           </React.Fragment>
         ))}
         <br />
-        <form className="abstract" onSubmit={e => { e.preventDefault(); imageUploader('projects', slug.trim()); imageFetcher(1500); }} id='imageForm'>
+        <form className="abstract" onSubmit={handleImageUpload} id='imageForm'>
           <input type="file" id="imageInput" name="imageFile" style={{ float: "left" }} />
           <label htmlFor="sn-image" className="sidenote-toggle">⋆</label>
           <button style={{ float: "right" }}>Upload</button>
