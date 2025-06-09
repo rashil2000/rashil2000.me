@@ -123,7 +123,7 @@ export default function ManageProjects() {
             <div style={{ clear: "both" }}></div>
             {project.children.map(item => (
               <React.Fragment key={item.path}>
-                <a target="_blank" href={item.url} rel="noopener noreferrer" style={{ float: "left" }}>└ {item.name}</a>
+                <a target="_blank" href={baseUrl + "/assets/" + item.pathname} rel="noopener noreferrer" style={{ float: "left" }}>└ {item.name}</a>
                 <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => { imageDeleter(item.url); imageFetcher(200); }}>Remove</span>
                 <div style={{ clear: "both" }}></div>
               </React.Fragment>
