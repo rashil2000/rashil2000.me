@@ -5,7 +5,7 @@ import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 import { DiscussionEmbed } from 'disqus-react'
 
-import { dateString, getProject, getProjects } from '../../lib/utils'
+import { baseUrl, dateString, getProject, getProjects } from '../../lib/utils'
 
 export default function Project({ project }) {
   const router = useRouter()
@@ -63,8 +63,8 @@ export default function Project({ project }) {
         shortname='rashil2000'
         config={
           {
-            url: `https://rashil2000.me/project/${project.slug}`,
-            identifier: `/blog/${project.slug}`,
+            url: `${baseUrl}/projects/${project.slug}`,
+            identifier: `/project/${project.slug}`,
             title: project.title,
           }
         }
