@@ -5,7 +5,7 @@ import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from 'rehype-starry-night'
 import { DiscussionEmbed } from 'disqus-react'
 
-import { dateString, getBlog, getBlogs } from '../../lib/utils'
+import { baseUrl, dateString, getBlog, getBlogs } from '../../lib/utils'
 
 export default function Blog({ blog }) {
   const router = useRouter()
@@ -61,7 +61,7 @@ export default function Blog({ blog }) {
         shortname='rashil2000'
         config={
           {
-            url: `https://rashil2000.me/blog/${blog.slug}`,
+            url: `${baseUrl}/blogs/${blog.slug}`,
             identifier: `/blog/${blog.slug}`,
             title: blog.title,
           }
