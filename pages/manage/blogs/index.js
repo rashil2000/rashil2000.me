@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import ReactMde from 'react-mde'
@@ -7,7 +7,7 @@ import rehypeStarryNight from "rehype-starry-night";
 
 import { baseUrl } from '../../../lib/utils'
 import AuthBlock from '../../../lib/AuthBlock'
-import {createBlog, deleteBlog, getAllBlogs} from "../../../services/BlogService";
+import { createBlog, deleteBlog, getAllBlogs } from "../../../services/BlogService";
 import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
 
 export default function ManageBlogs() {
@@ -20,23 +20,41 @@ export default function ManageBlogs() {
   const [selectedTab, setSelectedTab] = useState("write");
   const [currentBlogs, setCurrentBlogs] = useState([]);
   const [currentImages, setCurrentImages] = useState({ children: [] });
-  const [firstLoad, setFirstLoad] = useState(true);
 
-  const contentFetcher = async hold => {
-    await new Promise(resolve => setTimeout(resolve, hold));
-    setCurrentBlogs(await getAllBlogs());
+  useEffect(() => {
+    getAllBlogs().then(setCurrentBlogs);
+    imageLister('blogs').then(setCurrentImages);
+  }, []);
+
+  const handleBlogDelete = async (slug, title) => {
+    await deleteBlog(slug, title);
+    setCurrentBlogs(currentBlogs.filter(b => b.slug !== slug));
   };
-  const imageFetcher = async hold => {
-    if (typeof window !== 'undefined') {
-      await new Promise(resolve => setTimeout(resolve, hold));
-      setCurrentImages(await imageLister('blogs'));
-    }
+
+  const handleBlogCreate = async (e) => {
+    e.preventDefault();
+    const newBlog = await createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim(), preview?.trim());
+    if (newBlog === null)
+      return;
+    setCurrentBlogs([newBlog, ...currentBlogs]);
+    setTitle('');
+    setDescription('');
+    setContent('');
+    setSlug('');
+    setDate('');
+    setPreview('');
   };
-  if (firstLoad) {
-    contentFetcher(100);
-    imageFetcher(100);
-    setFirstLoad(false);
-  }
+
+  const handleImageDelete = async (path) => {
+    await imageDeleter(path);
+    imageLister('blogs').then(setCurrentImages);
+  };
+
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
+    await imageUploader('blogs', slug.trim());
+    imageLister('blogs').then(setCurrentImages);
+  };
 
   return (
     <AuthBlock>
@@ -59,7 +77,7 @@ export default function ManageBlogs() {
                 as={`/manage/blogs/${blog.slug}`}
                 style={{ textDecoration: 'none' }}>Edit</Link>
               &nbsp;|&nbsp;
-              <span style={{ cursor: 'pointer' }} onClick={() => { deleteBlog(blog.slug, blog.title); contentFetcher(200); }}>Remove</span>
+              <span style={{ cursor: 'pointer' }} onClick={() => handleBlogDelete(blog.slug, blog.title)}>Remove</span>
             </p>
           </React.Fragment>
         ))}
@@ -69,7 +87,7 @@ export default function ManageBlogs() {
           <h2>Create Blog</h2>
         </div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); createBlog(title.trim(), description.trim(), content.trim(), slug.trim(), date.trim(), preview?.trim()); contentFetcher(1000); }} autoComplete='off' id='blogForm'>
+        <form onSubmit={handleBlogCreate} autoComplete='off' id='blogForm'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -119,12 +137,12 @@ export default function ManageBlogs() {
         {currentImages && currentImages.children && currentImages.children.map(blog => (
           <React.Fragment key={blog.path}>
             <span style={{ float: "left" }}>{blog.name}</span>
-            <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => { imageDeleter(blog.path); imageFetcher(200); }}>Remove all</span>
+            <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(blog.path)}>Remove all</span>
             <div style={{ clear: "both" }}></div>
             {blog.children.map(item => (
               <React.Fragment key={item.path}>
                 <a target="_blank" href={baseUrl + "/assets/" + item.pathname} rel="noopener noreferrer" style={{ float: "left" }}>└ {item.name}</a>
-                <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => { imageDeleter(item.url); imageFetcher(200); }}>Remove</span>
+                <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(item.url)}>Remove</span>
                 <div style={{ clear: "both" }}></div>
               </React.Fragment>
             ))}
@@ -132,7 +150,7 @@ export default function ManageBlogs() {
           </React.Fragment>
         ))}
         <br />
-        <form className="abstract" onSubmit={e => { e.preventDefault(); imageUploader('blogs', slug.trim()); imageFetcher(1500); }} id='imageForm'>
+        <form className="abstract" onSubmit={handleImageUpload} id='imageForm'>
           <input type="file" id="imageInput" name="imageFile" style={{ float: "left" }} />
           <label htmlFor="sn-image" className="sidenote-toggle">⋆</label>
           <button style={{ float: "right" }}>Upload</button>
