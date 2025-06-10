@@ -3,8 +3,6 @@ import { getLastCommitDate, sortByDate } from "../lib/utils";
 export const getAllProjects = async () => {
     const res = await fetch(`/api/projects`);
     let projects = await res.json();
-    for (let item of projects)
-        item.date = await getLastCommitDate(item.github);
     return sortByDate(projects);
 }
 

@@ -21,14 +21,15 @@ export default async function handler(req, res) {
                     return;
                 }
                 const project = await Project.create(req.body);
-                try {
-                    await res.revalidate('/projects')
-                    await res.revalidate(`/projects/${project.slug}`)
-                    await res.revalidate(`/manage/projects/${project.slug}`)
-                    return res.status(201).json(project);
-                } catch (err) {
-                    return res.status(500).send('Error revalidating')
-                }
+                // Fire off revalidations without waiting for them to complete
+                Promise.all([
+                    res.revalidate('/projects'),
+                    res.revalidate(`/projects/${project.slug}`),
+                    res.revalidate(`/manage/projects/${project.slug}`),
+                ]).catch((err) => {
+                    console.error("Error during background revalidation:", err);
+                });
+                return res.status(201).json(project);
             }
             case "DELETE": {
                 const session = await getServerSession(req, res, authOptions);
@@ -37,12 +38,10 @@ export default async function handler(req, res) {
                     return;
                 }
                 const resp = await Project.deleteMany({});
-                try {
-                    await res.revalidate('/projects')
-                    return res.status(200).json(resp);
-                } catch (err) {
-                    return res.status(500).send('Error revalidating')
-                }
+                res.revalidate('/projects').catch((err) => {
+                    console.error("Error during background revalidation:", err);
+                });
+                return res.status(200).json(resp);
             }
             default: {
                 res.setHeader("Allow", ["GET", "POST", "DELETE"]);

@@ -31,14 +31,15 @@ export default async function handler(req, res) {
                 if (!project) {
                     return res.status(404).json({ message: "Project not found" });
                 }
-                try {
-                    await res.revalidate('/projects')
-                    await res.revalidate(`/projects/${slug}`)
-                    await res.revalidate(`/manage/projects/${slug}`)
-                    return res.status(200).json(project);
-                } catch (err) {
-                    return res.status(500).send('Error revalidating')
-                }
+                // Fire off revalidations without waiting for them to complete
+                Promise.all([
+                    res.revalidate('/projects'),
+                    res.revalidate(`/projects/${slug}`),
+                    res.revalidate(`/manage/projects/${slug}`),
+                ]).catch((err) => {
+                    console.error("Error during background revalidation:", err);
+                });
+                return res.status(200).json(project);
             }
             case "DELETE": {
                 const session = await getServerSession(req, res, authOptions);
@@ -49,12 +50,10 @@ export default async function handler(req, res) {
                 if (!project) {
                     return res.status(404).json({ message: "Project not found" });
                 }
-                try {
-                    await res.revalidate('/projects')
-                    return res.status(200).json(project);
-                } catch (err) {
-                    return res.status(500).send('Error revalidating')
-                }
+                res.revalidate('/projects').catch((err) => {
+                    console.error("Error during background revalidation:", err);
+                });
+                return res.status(200).json(project);
             }
             default: {
                 res.setHeader("Allow", ["GET", "PUT", "DELETE"]);

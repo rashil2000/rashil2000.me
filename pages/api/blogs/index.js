@@ -21,14 +21,15 @@ export default async function handler(req, res) {
           return;
         }
         const blog = await Blog.create(req.body);
-        try {
-          await res.revalidate('/blogs')
-          await res.revalidate(`/blogs/${blog.slug}`)
-          await res.revalidate(`/manage/blogs/${blog.slug}`)
-          return res.status(201).json(blog);
-        } catch (err) {
-          return res.status(500).send('Error revalidating')
-        }
+        // Fire off revalidations without waiting for them to complete
+        Promise.all([
+          res.revalidate('/blogs'),
+          res.revalidate(`/blogs/${blog.slug}`),
+          res.revalidate(`/manage/blogs/${blog.slug}`),
+        ]).catch((err) => {
+          console.error("Error during background revalidation:", err);
+        });
+        return res.status(201).json(blog);
       }
       case "DELETE": {
         const session = await getServerSession(req, res, authOptions);
@@ -37,12 +38,10 @@ export default async function handler(req, res) {
           return;
         }
         const resp = await Blog.deleteMany({});
-        try {
-          await res.revalidate('/blogs')
-          return res.status(200).json(resp);
-        } catch (err) {
-          return res.status(500).send('Error revalidating')
-        }
+        res.revalidate('/blogs').catch((err) => {
+          console.error("Error during background revalidation:", err);
+        });
+        return res.status(200).json(resp);
       }
       default: {
         res.setHeader("Allow", ["GET", "POST", "DELETE"]);

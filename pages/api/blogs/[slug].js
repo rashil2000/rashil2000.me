@@ -31,14 +31,15 @@ export default async function handler(req, res) {
         if (!blog) {
           return res.status(404).json({ message: "Blog not found" });
         }
-        try {
-          await res.revalidate('/blogs')
-          await res.revalidate(`/blogs/${slug}`)
-          await res.revalidate(`/manage/blogs/${slug}`)
-          return res.status(200).json(blog);
-        } catch (err) {
-          return res.status(500).send('Error revalidating')
-        }
+        // Fire off revalidations without waiting for them to complete
+        Promise.all([
+          res.revalidate('/blogs'),
+          res.revalidate(`/blogs/${slug}`),
+          res.revalidate(`/manage/blogs/${slug}`),
+        ]).catch((err) => {
+          console.error("Error during background revalidation:", err);
+        });
+        return res.status(200).json(blog);
       }
       case "DELETE": {
         const session = await getServerSession(req, res, authOptions);
@@ -49,12 +50,10 @@ export default async function handler(req, res) {
         if (!blog) {
           return res.status(404).json({ message: "Blog not found" });
         }
-        try {
-          await res.revalidate('/blogs')
-          return res.status(200).json(blog);
-        } catch (err) {
-          return res.status(500).send('Error revalidating')
-        }
+        res.revalidate('/blogs').catch((err) => {
+          console.error("Error during background revalidation:", err);
+        });
+        return res.status(200).json(blog);
       }
       default: {
         res.setHeader("Allow", ["GET", "PUT", "DELETE"]);
