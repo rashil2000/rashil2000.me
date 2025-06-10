@@ -1,4 +1,4 @@
-import { getLastCommitDate, sortByDate } from "../lib/utils";
+import { sortByDate } from "../lib/utils";
 
 export const getAllProjects = async () => {
     const res = await fetch(`/api/projects`);
