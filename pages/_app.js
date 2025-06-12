@@ -5,6 +5,8 @@ import '@wooorm/starry-night/style/both'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { SessionProvider } from "next-auth/react"
+import { Analytics } from '@vercel/analytics/next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export default function MyApp({ Component, pageProps }) {
   if (typeof window !== 'undefined') {
@@ -72,6 +74,8 @@ export default function MyApp({ Component, pageProps }) {
           }
         `}</style>
         <Component {...pageProps} />
+        <Analytics />
+        <SpeedInsights />
       </SessionProvider>
     );
   }
@@ -95,6 +99,8 @@ export default function MyApp({ Component, pageProps }) {
         }
       `}</style>
       <Component {...pageProps} />
+      <Analytics />
+      <SpeedInsights />
     </SessionProvider>
   );
 }
