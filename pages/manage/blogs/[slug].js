@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -8,7 +8,8 @@ import rehypeStarryNight from "rehype-starry-night";
 
 import { updateBlog } from "../../../services/BlogService";
 import AuthBlock from '../../../lib/AuthBlock'
-import { getBlog, getBlogs } from "../../../lib/utils";
+import { baseUrl, getBlog, getBlogs } from "../../../lib/utils";
+import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
 
 export default function EditBlog({ blog }) {
   const router = useRouter();
@@ -51,6 +52,27 @@ export default function EditBlog({ blog }) {
   const [date, setDate] = useState((new Date((new Date(blog.date)).toISOString().replace('Z', '-05:30'))).toISOString().slice(0, -1));
   const [preview, setPreview] = useState(blog.preview);
   const [selectedTab, setSelectedTab] = useState("write");
+  const [currentImages, setCurrentImages] = useState({ children: [] });
+
+  useEffect(() => {
+    imageLister(`blogs%2F${blog.slug}`).then(setCurrentImages);
+  }, []);
+
+  const handleBlogUpdate = async (e) => {
+    e.preventDefault();
+    await updateBlog(title.trim(), description.trim(), content.trim(), blog.slug, date.trim(), preview?.trim());
+  };
+
+  const handleImageDelete = async (path) => {
+    await imageDeleter(path);
+    imageLister(`blogs%2F${blog.slug}`).then(setCurrentImages);
+  };
+
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
+    await imageUploader('blogs', blog.slug);
+    imageLister(`blogs%2F${blog.slug}`).then(setCurrentImages);
+  };
 
   return (
     <AuthBlock>
@@ -62,7 +84,7 @@ export default function EditBlog({ blog }) {
       <main>
         <div className="abstract"><h2>Edit Blog</h2></div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); updateBlog(title.trim(), description.trim(), content.trim(), blog.slug, date.trim(), preview?.trim()); }} autoComplete='off'>
+        <form onSubmit={handleBlogUpdate} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -98,6 +120,35 @@ export default function EditBlog({ blog }) {
             <br /><button>Update</button><br /><br /><br />
           </div>
 
+        </form>
+
+        <div className="abstract"><h2>Images</h2></div>
+        {currentImages && currentImages.children && currentImages.children.length !== 0
+            ?
+            <React.Fragment>
+              <span style={{ float: "left" }}>{blog.slug}</span>
+              <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(`images/blogs/${blog.slug}`)}>Remove all</span>
+              <div style={{ clear: "both" }}></div>
+              {currentImages.children.map(item => (
+                  <React.Fragment key={item.path}>
+                    <a target="_blank" href={baseUrl + "/assets/" + item.pathname} rel="noopener noreferrer" style={{ float: "left" }}>└ {item.name}</a>
+                    <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(item.url)}>Remove</span>
+                    <div style={{ clear: "both" }}></div>
+                  </React.Fragment>
+              ))}
+              <br />
+            </React.Fragment>
+            :
+            <div className="abstract">
+              No images found for this blog. Use the form below to upload one.
+            </div>
+        }
+        <br />
+        <form className="abstract" onSubmit={handleImageUpload} id='imageForm'>
+          <input type="file" id="imageInput" name="imageFile" style={{ float: "left" }} />
+          <button style={{ float: "right" }}>Upload</button>
+          <div style={{ clear: "both" }}></div>
+          <br /><br /><span id='imageSpan'></span><br /><br />
         </form>
       </main>
       <footer>

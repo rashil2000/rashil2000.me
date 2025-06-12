@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -8,7 +8,8 @@ import rehypeStarryNight from "rehype-starry-night";
 
 import { updateProject } from "../../../services/ProjectService";
 import AuthBlock from '../../../lib/AuthBlock'
-import { getProject, getProjects } from "../../../lib/utils";
+import { baseUrl, getProject, getProjects } from "../../../lib/utils";
+import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
 
 export default function EditProject({ project }) {
   const router = useRouter();
@@ -51,6 +52,27 @@ export default function EditProject({ project }) {
   const [github, setGithub] = useState(project.github);
   const [preview, setPreview] = useState(project.preview);
   const [selectedTab, setSelectedTab] = useState("write");
+  const [currentImages, setCurrentImages] = useState({ children: [] });
+
+  useEffect(() => {
+    imageLister(`projects%2F${project.slug}`).then(setCurrentImages);
+  }, []);
+
+  const handleProjectUpdate = async (e) => {
+    e.preventDefault();
+    await updateProject(title.trim(), description.trim(), content.trim(), project.slug, github.trim(), preview?.trim());
+  };
+
+  const handleImageDelete = async (path) => {
+    await imageDeleter(path);
+    imageLister(`projects%2F${project.slug}`).then(setCurrentImages);
+  };
+
+  const handleImageUpload = async (e) => {
+    e.preventDefault();
+    await imageUploader('projects', project.slug);
+    imageLister(`projects%2F${project.slug}`).then(setCurrentImages);
+  };
 
   return (
     <AuthBlock>
@@ -62,7 +84,7 @@ export default function EditProject({ project }) {
       <main>
         <div className="abstract"><h2>Edit Project</h2></div>
         <br />
-        <form onSubmit={e => { e.preventDefault(); updateProject(title.trim(), description.trim(), content.trim(), project.slug, github.trim(), preview?.trim()); }} autoComplete='off'>
+        <form onSubmit={handleProjectUpdate} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
           <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />
@@ -98,6 +120,35 @@ export default function EditProject({ project }) {
             <br /><button>Update</button><br /><br /><br />
           </div>
 
+        </form>
+
+        <div className="abstract"><h2>Images</h2></div>
+        {currentImages && currentImages.children && currentImages.children.length !== 0
+            ?
+            <React.Fragment>
+              <span style={{ float: "left" }}>{project.slug}</span>
+              <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(`images/projects/${project.slug}`)}>Remove all</span>
+              <div style={{ clear: "both" }}></div>
+              {currentImages.children.map(item => (
+                  <React.Fragment key={item.path}>
+                    <a target="_blank" href={baseUrl + "/assets/" + item.pathname} rel="noopener noreferrer" style={{ float: "left" }}>└ {item.name}</a>
+                    <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(item.url)}>Remove</span>
+                    <div style={{ clear: "both" }}></div>
+                  </React.Fragment>
+              ))}
+              <br />
+            </React.Fragment>
+            :
+            <div className="abstract">
+              No images found for this project. Use the form below to upload one.
+            </div>
+        }
+        <br />
+        <form className="abstract" onSubmit={handleImageUpload} id='imageForm'>
+          <input type="file" id="imageInput" name="imageFile" style={{ float: "left" }} />
+          <button style={{ float: "right" }}>Upload</button>
+          <div style={{ clear: "both" }}></div>
+          <br /><br /><span id='imageSpan'></span><br /><br />
         </form>
       </main>
       <footer>
