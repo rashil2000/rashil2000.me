@@ -71,7 +71,8 @@ export default function ManageProjects() {
             <Link href="/projects/[slug]" as={`/projects/${project.slug}`}>
               <h5 style={{ margin: "0" }}>{project.title}</h5>
             </Link>
-            <p id="date-style">
+            <p style={{ float: "left" }}>{project.draft ? '(Unpublished)' : '(Published)'}</p>
+            <p id="date-style" style={{ float: "right" }}>
               <Link
                 href="/manage/projects/[slug]"
                 as={`/manage/projects/${project.slug}`}
@@ -79,6 +80,8 @@ export default function ManageProjects() {
               &nbsp;|&nbsp;
               <span style={{ cursor: 'pointer' }} onClick={() => handleProjectDelete(project.slug, project.title)}>Remove</span>
             </p>
+            <div style={{ clear: "both" }}></div>
+            <br />
           </React.Fragment>
         ))}
         <br />

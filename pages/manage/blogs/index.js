@@ -71,7 +71,8 @@ export default function ManageBlogs() {
             <Link href="/blogs/[slug]" as={`/blogs/${blog.slug}`}>
               <h5 style={{ margin: "0" }}>{blog.title}</h5>
             </Link>
-            <p id="date-style">
+            <p style={{ float: "left" }}>{blog.draft ? '(Unpublished)' : '(Published)'}</p>
+            <p id="date-style" style={{ float: "right" }}>
               <Link
                 href="/manage/blogs/[slug]"
                 as={`/manage/blogs/${blog.slug}`}
@@ -79,6 +80,8 @@ export default function ManageBlogs() {
               &nbsp;|&nbsp;
               <span style={{ cursor: 'pointer' }} onClick={() => handleBlogDelete(blog.slug, blog.title)}>Remove</span>
             </p>
+            <div style={{ clear: "both" }}></div>
+            <br />
           </React.Fragment>
         ))}
         <br />
