@@ -6,7 +6,6 @@ import ReactMde from 'react-mde'
 import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
-import { updateProject } from "../../../services/ProjectService";
 import AuthBlock from '../../../lib/AuthBlock'
 import { baseUrl, getProject, getProjects } from "../../../lib/utils";
 import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
@@ -60,7 +59,37 @@ export default function EditProject({ project }) {
 
   const handleProjectUpdate = async (e) => {
     e.preventDefault();
-    await updateProject(title.trim(), description.trim(), content.trim(), project.slug, github.trim(), preview?.trim());
+    if (!confirm('Are all input fields correct?'))
+      return;
+
+    if (!(title && description && content && github)) {
+      alert("No field should remain empty!");
+      return;
+    }
+    if (!github.match(/^([a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38})\/([a-z\d](?:[a-z\d]|[-_.](?=[a-z\d])){0,99})$/i)) {
+      alert("Enter a valid GitHub identifier.");
+      return;
+    }
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    try {
+      const response = await fetch(`/api/projects/${project.slug}`, {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify({ title, description, content, github, preview }),
+        redirect: 'follow'
+      });
+      const result = await response.json();
+      if (result._id){
+        alert(`Updated project "${result.title}" successfully.`)
+        history.back();
+      } else
+        alert(JSON.stringify(result));
+    } catch (err) {
+      alert('Error:\n' + JSON.stringify(err));
+    }
   };
 
   const handleImageDelete = async (path) => {
@@ -87,21 +116,21 @@ export default function EditProject({ project }) {
         <form onSubmit={handleProjectUpdate} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
-          <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />
+          <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value?.trim())} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
           <label htmlFor="description" style={{ float: "left" }}>Description:</label>
-          <input type="text" id="description" name="description" style={{ float: "right" }} value={description} required onChange={e => setDescription(e.target.value)} /><br /><br />
+          <input type="text" id="description" name="description" style={{ float: "right" }} value={description} required onChange={e => setDescription(e.target.value?.trim())} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
           <label htmlFor="github" style={{ float: "left" }}>GitHub:&nbsp;</label><label htmlFor="sn-github" className="sidenote-toggle">⋆</label>
-          <input type="text" id="github" name="github" style={{ float: "right" }} required value={github} onChange={e => setGithub(e.target.value)} /><br />
+          <input type="text" id="github" name="github" style={{ float: "right" }} required value={github} onChange={e => setGithub(e.target.value?.trim())} /><br />
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-github" className="sidenote-toggle" />
           <span className="sidenote">Format: username/repository</span><br />
 
           <label htmlFor="preview" style={{ float: "left" }}>Preview Image:&nbsp;</label><label htmlFor="sn-preview" className="sidenote-toggle">⋆</label>
-          <input type="text" id="preview" name="preview" style={{ float: "right" }} value={preview} onChange={e => setPreview(e.target.value)} /><br />
+          <input type="text" id="preview" name="preview" style={{ float: "right" }} value={preview} onChange={e => setPreview(e.target.value?.trim())} /><br />
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
           <span className="sidenote">URL for link preview. Optional</span><br />

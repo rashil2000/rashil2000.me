@@ -6,9 +6,8 @@ import ReactMde from 'react-mde'
 import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
-import { updateBlog } from "../../../services/BlogService";
 import AuthBlock from '../../../lib/AuthBlock'
-import { baseUrl, getBlog, getBlogs } from "../../../lib/utils";
+import { baseUrl, dateString, getBlog, getBlogs } from "../../../lib/utils";
 import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
 
 export default function EditBlog({ blog }) {
@@ -60,7 +59,37 @@ export default function EditBlog({ blog }) {
 
   const handleBlogUpdate = async (e) => {
     e.preventDefault();
-    await updateBlog(title.trim(), description.trim(), content.trim(), blog.slug, date.trim(), preview?.trim());
+    if (!confirm('Are all input fields correct?'))
+      return null;
+
+    if (!(title && description && content && date)) {
+      alert('No field should remain empty!');
+      return null;
+    }
+    if (dateString(date) === 'NaN Invalid Date NaN') {
+      alert("Enter a valid date.")
+      return null;
+    }
+
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    try {
+      const response = await fetch(`/api/blogs/${blog.slug}`, {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify({ title, description, content, date, preview }),
+        redirect: 'follow'
+      });
+      const result = await response.json();
+      if (result._id) {
+        alert(`Updated blog "${result.title}" successfully.`)
+        history.back();
+      } else
+        alert(JSON.stringify(result));
+    } catch (err) {
+      return alert('Error:\n' + JSON.stringify(err));
+    }
   };
 
   const handleImageDelete = async (path) => {
@@ -87,21 +116,21 @@ export default function EditBlog({ blog }) {
         <form onSubmit={handleBlogUpdate} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
-          <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />
+          <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value?.trim())} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
           <label htmlFor="description" style={{ float: "left" }}>Description:</label>
-          <input type="text" id="description" name="description" style={{ float: "right" }} value={description} required onChange={e => setDescription(e.target.value)} /><br /><br />
+          <input type="text" id="description" name="description" style={{ float: "right" }} value={description} required onChange={e => setDescription(e.target.value?.trim())} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
           <label htmlFor="datetime" style={{ float: "left" }}>Date and Time:&nbsp;</label><label htmlFor="sn-datetime" className="sidenote-toggle">⋆</label>
-          <input type="datetime-local" id="datetime" name="datetime" style={{ float: "right" }} value={date} required onChange={e => setDate(e.target.value)} /><br />
+          <input type="datetime-local" id="datetime" name="datetime" style={{ float: "right" }} value={date} required onChange={e => setDate(e.target.value?.trim())} /><br />
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-datetime" className="sidenote-toggle" />
           <span className="sidenote">Format: yyyy-mm-ddTHH:mm</span><br />
 
           <label htmlFor="preview" style={{ float: "left" }}>Preview Image:&nbsp;</label><label htmlFor="sn-preview" className="sidenote-toggle">⋆</label>
-          <input type="text" id="preview" name="preview" style={{ float: "right" }} value={preview} onChange={e => setPreview(e.target.value)} /><br />
+          <input type="text" id="preview" name="preview" style={{ float: "right" }} value={preview} onChange={e => setPreview(e.target.value?.trim())} /><br />
           <div style={{ clear: "both" }}></div>
           <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
           <span className="sidenote">URL for link preview. Optional</span><br />
