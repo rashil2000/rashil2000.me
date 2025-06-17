@@ -8,7 +8,7 @@ import rehypeStarryNight from "rehype-starry-night";
 
 import AuthBlock from '../../../lib/AuthBlock'
 import { baseUrl, dateString, getBlog, getBlogs } from "../../../lib/utils";
-import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
+import { imageDeleter, imageLister, imageUploader } from "../../../lib/assetUtils";
 
 export default function EditBlog({ blog }) {
   const router = useRouter();

@@ -7,7 +7,7 @@ import rehypeStarryNight from "rehype-starry-night";
 
 import { baseUrl, dateString } from '../../../lib/utils'
 import AuthBlock from '../../../lib/AuthBlock'
-import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
+import { imageDeleter, imageLister, imageUploader } from "../../../lib/assetUtils";
 
 export default function CreateBlog() {
     const [content, setContent] = useState("");

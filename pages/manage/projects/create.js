@@ -7,7 +7,7 @@ import rehypeStarryNight from "rehype-starry-night";
 
 import { baseUrl } from '../../../lib/utils'
 import AuthBlock from '../../../lib/AuthBlock'
-import { imageDeleter, imageLister, imageUploader } from "../../../services/AssetService";
+import { imageDeleter, imageLister, imageUploader } from "../../../lib/assetUtils";
 
 export default function CreateProject() {
     const [content, setContent] = useState("");
