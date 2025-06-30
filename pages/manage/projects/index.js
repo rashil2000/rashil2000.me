@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import { baseUrl, sortByDate } from '../../../lib/utils'
-import AuthBlock from '../../../lib/AuthBlock'
+import AuthBlock from '../../../components/AuthBlock'
 import { imageDeleter, imageLister } from "../../../lib/assetUtils";
 
 export default function ManageProjects() {

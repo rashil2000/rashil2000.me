@@ -6,7 +6,7 @@ import ReactMde from 'react-mde'
 import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
-import AuthBlock from '../../../lib/AuthBlock'
+import AuthBlock from '../../../components/AuthBlock'
 import { baseUrl } from "../../../lib/utils";
 import { imageDeleter, imageLister, imageUploader } from "../../../lib/assetUtils";
 
@@ -76,6 +76,9 @@ export default function EditProject() {
 
   const handleProjectUpdate = async (e) => {
     e.preventDefault();
+    setTitle(title?.trim());
+    setDescription(description?.trim());
+
     if (!confirm('Are all input fields correct?'))
       return;
 
@@ -133,11 +136,11 @@ export default function EditProject() {
         <form onSubmit={handleProjectUpdate} autoComplete='off'>
 
           <label htmlFor="title" style={{ float: "left" }}>Title:</label>
-          <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value?.trim())} /><br /><br />
+          <input type="text" id="title" name="title" style={{ float: "right" }} value={title} required onChange={e => setTitle(e.target.value)} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
           <label htmlFor="description" style={{ float: "left" }}>Description:</label>
-          <input type="text" id="description" name="description" style={{ float: "right" }} value={description} required onChange={e => setDescription(e.target.value?.trim())} /><br /><br />
+          <input type="text" id="description" name="description" style={{ float: "right" }} value={description} required onChange={e => setDescription(e.target.value)} /><br /><br />
           <div style={{ clear: "both" }}></div>
 
           <label htmlFor="github" style={{ float: "left" }}>GitHub:&nbsp;</label><label htmlFor="sn-github" className="sidenote-toggle">⋆</label>

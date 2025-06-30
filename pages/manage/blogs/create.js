@@ -6,7 +6,7 @@ import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
 import { baseUrl, dateString } from '../../../lib/utils'
-import AuthBlock from '../../../lib/AuthBlock'
+import AuthBlock from '../../../components/AuthBlock'
 import { imageDeleter, imageLister, imageUploader } from "../../../lib/assetUtils";
 
 export default function CreateBlog() {
@@ -22,6 +22,9 @@ export default function CreateBlog() {
 
     const handleBlogCreate = async (e) => {
         e.preventDefault();
+        setTitle(title?.trim());
+        setDescription(description?.trim());
+
         if (!confirm('Are all input fields correct?'))
             return;
 
@@ -82,11 +85,11 @@ export default function CreateBlog() {
                 <form onSubmit={handleBlogCreate} autoComplete='off'>
 
                     <label htmlFor="title" style={{ float: "left" }}>Title:</label>
-                    <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value?.trim())} /><br /><br />
+                    <input type="text" id="title" name="title" style={{ float: "right" }} required value={title} onChange={e => setTitle(e.target.value)} /><br /><br />
                     <div style={{ clear: "both" }}></div>
 
                     <label htmlFor="description" style={{ float: "left" }}>Description:</label>
-                    <input type="text" id="description" name="description" style={{ float: "right" }} required value={description} onChange={e => setDescription(e.target.value?.trim())} /><br /><br />
+                    <input type="text" id="description" name="description" style={{ float: "right" }} required value={description} onChange={e => setDescription(e.target.value)} /><br /><br />
                     <div style={{ clear: "both" }}></div>
 
                     <label htmlFor="datetime" style={{ float: "left" }}>Date and Time:&nbsp;</label><label htmlFor="sn-datetime" className="sidenote-toggle">⋆</label>
@@ -105,13 +108,13 @@ export default function CreateBlog() {
                     <input type="text" id="preview" name="preview" style={{ float: "right" }} value={preview} onChange={e => setPreview(e.target.value?.trim())} /><br />
                     <div style={{ clear: "both" }}></div>
                     <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
-                    <span className="sidenote">URL for link preview. Optional</span>
+                    <span className="sidenote">URL for link preview. Optional</span><br />
 
                     <label htmlFor="draft" style={{ float: "left" }}>Mark as draft:&nbsp;</label><label htmlFor="sn-draft" className="sidenote-toggle">⋆</label>
                     <input type="checkbox" id="draft" name="draft" style={{ float: "right" }} checked={draft} onChange={e => setDraft(e.target.checked)} />
                     <div style={{ clear: "both" }}></div>
                     <input type="checkbox" id="sn-draft" className="sidenote-toggle" />
-                    <span className="sidenote">If checked, this blog won't be publicly visible</span>
+                    <span className="sidenote">If checked, this blog won't be publicly visible</span><br />
 
                     <br />
                     <ReactMde

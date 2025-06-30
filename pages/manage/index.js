@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { signOut } from 'next-auth/react';
 
 import { baseUrl } from '../../lib/utils';
-import AuthBlock from '../../lib/AuthBlock'
+import AuthBlock from '../../components/AuthBlock'
 
 export default function Manage() {
   return (
