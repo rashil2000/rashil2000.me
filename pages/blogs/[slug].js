@@ -16,13 +16,13 @@ export default function Blog({ blog }) {
       <div>
         <Head>
           <title>Loading... - rashil2000</title>
-          <meta name="description" content="Building page..." />
+          <meta name="description" content="Loading blog data..." />
         </Head>
         <main>
           <div className="abstract">
             <h2>Loading...</h2>
             <br /><br />
-            <p>This page is getting built, please wait for a while. It'll reload itself.</p>
+            <p>Loading blog data, please wait...</p>
             <br />
           </div>
           <br /><br />
@@ -89,8 +89,16 @@ export const getStaticPaths = async () => (
   }
 );
 
-export const getStaticProps = async context => (
-  {
-    props: { blog: await getBlog(context.params.slug) },
+export const getStaticProps = async context => {
+  const blog = await getBlog(context.params.slug);
+
+  if (!blog) {
+    return {
+      notFound: true
+    };
   }
-);
+
+  return {
+    props: { blog }
+  };
+};

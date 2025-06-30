@@ -6,16 +6,23 @@ import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
     await dbConnect();
+    const session = await getServerSession(req, res, authOptions);
 
     try {
         switch (req.method) {
             case "GET": {
-                const projects = await Project.find(req.query);
+                const query = { ...req.query };
+
+                // If the user is not authenticated, only return published projects
+                if (!session) {
+                  query.draft = { $ne: true };
+                }
+
+                const projects = await Project.find(query);
                 res.status(200).json(projects);
                 break;
             }
             case "POST": {
-                const session = await getServerSession(req, res, authOptions);
                 if (!session) {
                     res.status(401).json({ message: "You must be logged in." });
                     return;
@@ -25,26 +32,13 @@ export default async function handler(req, res) {
                 Promise.all([
                     res.revalidate('/projects'),
                     res.revalidate(`/projects/${project.slug}`),
-                    res.revalidate(`/manage/projects/${project.slug}`),
                 ]).catch((err) => {
                     console.error("Error during background revalidation:", err);
                 });
                 return res.status(201).json(project);
             }
-            case "DELETE": {
-                const session = await getServerSession(req, res, authOptions);
-                if (!session) {
-                    res.status(401).json({ message: "You must be logged in." });
-                    return;
-                }
-                const resp = await Project.deleteMany({});
-                res.revalidate('/projects').catch((err) => {
-                    console.error("Error during background revalidation:", err);
-                });
-                return res.status(200).json(resp);
-            }
             default: {
-                res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+                res.setHeader("Allow", ["GET", "POST"]);
                 res.status(405).end(`Method ${req.method} Not Allowed`);
                 break;
             }

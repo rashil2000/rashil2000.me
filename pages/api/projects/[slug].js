@@ -7,6 +7,7 @@ import { authOptions } from "../auth/[...nextauth]";
 export default async function handler(req, res) {
     const { slug } = req.query;
     await dbConnect();
+    const session = await getServerSession(req, res, authOptions);
 
     try {
         switch (req.method) {
@@ -15,11 +16,16 @@ export default async function handler(req, res) {
                 if (!project) {
                     return res.status(404).json({ message: "Project not found" });
                 }
+
+                // Check if the project is a draft and the user is not authenticated
+                if (project.draft && !session) {
+                    return res.status(404).json({ message: "Project not found" });
+                }
+
                 res.status(200).json(project);
                 break;
             }
             case "PUT": {
-                const session = await getServerSession(req, res, authOptions);
                 if (!session) {
                     return res.status(401).json({ message: "You must be logged in." });
                 }
@@ -35,14 +41,12 @@ export default async function handler(req, res) {
                 Promise.all([
                     res.revalidate('/projects'),
                     res.revalidate(`/projects/${slug}`),
-                    res.revalidate(`/manage/projects/${slug}`),
                 ]).catch((err) => {
                     console.error("Error during background revalidation:", err);
                 });
                 return res.status(200).json(project);
             }
             case "DELETE": {
-                const session = await getServerSession(req, res, authOptions);
                 if (!session) {
                     return res.status(401).json({ message: "You must be logged in." });
                 }
@@ -50,7 +54,11 @@ export default async function handler(req, res) {
                 if (!project) {
                     return res.status(404).json({ message: "Project not found" });
                 }
-                res.revalidate('/projects').catch((err) => {
+                // Fire off revalidations without waiting for them to complete
+                Promise.all([
+                    res.revalidate('/projects'),
+                    res.revalidate(`/projects/${slug}`),
+                ]).catch((err) => {
                     console.error("Error during background revalidation:", err);
                 });
                 return res.status(200).json(project);

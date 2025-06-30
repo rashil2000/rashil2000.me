@@ -6,16 +6,23 @@ import { authOptions } from "../auth/[...nextauth]";
 
 export default async function handler(req, res) {
   await dbConnect();
+  const session = await getServerSession(req, res, authOptions);
 
   try {
     switch (req.method) {
       case "GET": {
-        const blogs = await Blog.find(req.query);
+        const query = { ...req.query };
+
+        // If the user is not authenticated, only return published blogs
+        if (!session) {
+          query.draft = { $ne: true };
+        }
+
+        const blogs = await Blog.find(query);
         res.status(200).json(blogs);
         break;
       }
       case "POST": {
-        const session = await getServerSession(req, res, authOptions);
         if (!session) {
           res.status(401).json({ message: "You must be logged in." });
           return;
@@ -25,26 +32,13 @@ export default async function handler(req, res) {
         Promise.all([
           res.revalidate('/blogs'),
           res.revalidate(`/blogs/${blog.slug}`),
-          res.revalidate(`/manage/blogs/${blog.slug}`),
         ]).catch((err) => {
           console.error("Error during background revalidation:", err);
         });
         return res.status(201).json(blog);
       }
-      case "DELETE": {
-        const session = await getServerSession(req, res, authOptions);
-        if (!session) {
-          res.status(401).json({ message: "You must be logged in." });
-          return;
-        }
-        const resp = await Blog.deleteMany({});
-        res.revalidate('/blogs').catch((err) => {
-          console.error("Error during background revalidation:", err);
-        });
-        return res.status(200).json(resp);
-      }
       default: {
-        res.setHeader("Allow", ["GET", "POST", "DELETE"]);
+        res.setHeader("Allow", ["GET", "POST"]);
         res.status(405).end(`Method ${req.method} Not Allowed`);
         break;
       }

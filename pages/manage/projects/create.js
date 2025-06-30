@@ -16,6 +16,7 @@ export default function CreateProject() {
     const [slug, setSlug] = useState("");
     const [github, setGithub] = useState("");
     const [preview, setPreview] = useState("");
+    const [draft, setDraft] = useState(false);
     const [selectedTab, setSelectedTab] = useState("write");
     const [currentImages, setCurrentImages] = useState({ children: [] });
 
@@ -40,7 +41,7 @@ export default function CreateProject() {
             const response = await fetch(`/api/projects`, {
                 method: 'POST',
                 headers: myHeaders,
-                body: JSON.stringify({ title, description, content, slug, github, preview }),
+                body: JSON.stringify({ title, description, content, slug, github, preview, draft }),
                 redirect: 'follow'
             });
             const result = await response.json();
@@ -105,6 +106,12 @@ export default function CreateProject() {
                     <div style={{ clear: "both" }}></div>
                     <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
                     <span className="sidenote">URL for link preview. Optional</span>
+
+                    <label htmlFor="draft" style={{ float: "left" }}>Mark as draft:&nbsp;</label><label htmlFor="sn-draft" className="sidenote-toggle">⋆</label>
+                    <input type="checkbox" id="draft" name="draft" style={{ float: "right" }} checked={draft} onChange={e => setDraft(e.target.checked)} />
+                    <div style={{ clear: "both" }}></div>
+                    <input type="checkbox" id="sn-draft" className="sidenote-toggle" />
+                    <span className="sidenote">If checked, this project won't be publicly visible</span>
 
                     <br /><br />
                     <ReactMde

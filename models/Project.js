@@ -27,6 +27,10 @@ const projectSchema = new mongoose.Schema({
     },
     preview: {
         type: String
+    },
+    draft: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -27,6 +27,10 @@ const blogSchema = new mongoose.Schema({
     },
     preview: {
         type: String
+    },
+    draft: {
+        type: Boolean,
+        default: false
     }
 });
 

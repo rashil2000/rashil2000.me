@@ -7,25 +7,26 @@ import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from "rehype-starry-night";
 
 import AuthBlock from '../../../lib/AuthBlock'
-import { baseUrl, getProject, getProjects } from "../../../lib/utils";
+import { baseUrl } from "../../../lib/utils";
 import { imageDeleter, imageLister, imageUploader } from "../../../lib/assetUtils";
 
-export default function EditProject({ project }) {
+export default function EditProject() {
   const router = useRouter();
+  const { slug } = router.query;
 
-  // If the page is not yet generated, this will be displayed initially until static props are fetched
-  if (router.isFallback) {
+  // Show loading state while fetching data
+  if (!slug) {
     return (
       <AuthBlock>
         <Head>
           <title>Loading... - rashil2000</title>
-          <meta name="description" content="Building page..." />
+          <meta name="description" content="Loading project data..." />
         </Head>
         <main>
           <div className="abstract">
             <h2>Loading...</h2>
             <br /><br />
-            <p>This page is getting built, please wait for a while. It'll reload itself.</p>
+            <p>Loading project data, please wait...</p>
             <br />
           </div>
           <br /><br />
@@ -45,17 +46,33 @@ export default function EditProject({ project }) {
     );
   }
 
-  const [content, setContent] = useState(project.content);
-  const [title, setTitle] = useState(project.title);
-  const [description, setDescription] = useState(project.description);
-  const [github, setGithub] = useState(project.github);
-  const [preview, setPreview] = useState(project.preview);
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [github, setGithub] = useState('');
+  const [preview, setPreview] = useState('');
+  const [draft, setDraft] = useState(false);
   const [selectedTab, setSelectedTab] = useState("write");
   const [currentImages, setCurrentImages] = useState({ children: [] });
 
   useEffect(() => {
-    imageLister(`projects%2F${project.slug}`).then(setCurrentImages);
-  }, []);
+    async function getProject() {
+      const res = await fetch(`/api/projects/${slug}`);
+      return await res.json();
+    }
+    function updateProjectState(projectData) {
+      if (!projectData) return;
+      setContent(projectData.content);
+      setTitle(projectData.title);
+      setDescription(projectData.description);
+      setGithub(projectData.github);
+      setPreview(projectData.preview || '');
+      setDraft(projectData.draft || false);
+    }
+
+    getProject().then(updateProjectState);
+    imageLister(`projects%2F${slug}`).then(setCurrentImages);
+  }, [slug]);
 
   const handleProjectUpdate = async (e) => {
     e.preventDefault();
@@ -75,10 +92,10 @@ export default function EditProject({ project }) {
     myHeaders.append("Content-Type", "application/json");
 
     try {
-      const response = await fetch(`/api/projects/${project.slug}`, {
+      const response = await fetch(`/api/projects/${slug}`, {
         method: 'PUT',
         headers: myHeaders,
-        body: JSON.stringify({ title, description, content, github, preview }),
+        body: JSON.stringify({ title, description, content, github, preview, draft }),
         redirect: 'follow'
       });
       const result = await response.json();
@@ -94,21 +111,21 @@ export default function EditProject({ project }) {
 
   const handleImageDelete = async (path) => {
     await imageDeleter(path);
-    imageLister(`projects%2F${project.slug}`).then(setCurrentImages);
+    imageLister(`projects%2F${slug}`).then(setCurrentImages);
   };
 
   const handleImageUpload = async (e) => {
     e.preventDefault();
-    await imageUploader('projects', project.slug);
-    imageLister(`projects%2F${project.slug}`).then(setCurrentImages);
+    await imageUploader('projects', slug);
+    imageLister(`projects%2F${slug}`).then(setCurrentImages);
   };
 
   return (
     <AuthBlock>
       <Head>
-        <title>{`Edit project '${project.title}' - rashil2000`}</title>
-        <meta name="description" content={`Edit project '${project.title}'`} />
-        <meta property="og:image" content={project.preview} />
+        <title>{`Edit project '${title}' - rashil2000`}</title>
+        <meta name="description" content={`Edit project '${title}'`} />
+        <meta property="og:image" content={preview} />
       </Head>
       <main>
         <div className="abstract"><h2>Edit Project</h2></div>
@@ -135,6 +152,12 @@ export default function EditProject({ project }) {
           <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
           <span className="sidenote">URL for link preview. Optional</span><br />
 
+          <label htmlFor="draft" style={{ float: "left" }}>Mark as draft:&nbsp;</label><label htmlFor="sn-draft" className="sidenote-toggle">⋆</label>
+          <input type="checkbox" id="draft" name="draft" style={{ float: "right" }} checked={draft} onChange={e => setDraft(e.target.checked)} />
+          <div style={{ clear: "both" }}></div>
+          <input type="checkbox" id="sn-draft" className="sidenote-toggle" />
+          <span className="sidenote">If checked, this project won't be publicly visible</span><br />
+
           <br />
           <ReactMde
             value={content}
@@ -155,8 +178,8 @@ export default function EditProject({ project }) {
         {currentImages && currentImages.children && currentImages.children.length !== 0
             ?
             <React.Fragment>
-              <span style={{ float: "left" }}>{project.slug}</span>
-              <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(`images/projects/${project.slug}`)}>Remove all</span>
+              <span style={{ float: "left" }}>{slug}</span>
+              <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(`images/projects/${slug}`)}>Remove all</span>
               <div style={{ clear: "both" }}></div>
               {currentImages.children.map(item => (
                   <React.Fragment key={item.path}>
@@ -195,15 +218,3 @@ export default function EditProject({ project }) {
   );
 }
 
-export const getStaticPaths = async () => (
-  {
-    paths: await getProjects(true),
-    fallback: true
-  }
-);
-
-export const getStaticProps = async context => (
-  {
-    props: { project: await getProject(context.params.slug) },
-  }
-);

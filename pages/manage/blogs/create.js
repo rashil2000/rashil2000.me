@@ -16,6 +16,7 @@ export default function CreateBlog() {
     const [slug, setSlug] = useState("");
     const [date, setDate] = useState("");
     const [preview, setPreview] = useState("");
+    const [draft, setDraft] = useState(false);
     const [selectedTab, setSelectedTab] = useState("write");
     const [currentImages, setCurrentImages] = useState({ children: [] });
 
@@ -40,7 +41,7 @@ export default function CreateBlog() {
             const response = await fetch(`/api/blogs`, {
                 method: 'POST',
                 headers: myHeaders,
-                body: JSON.stringify({ title, description, content, slug, date, preview }),
+                body: JSON.stringify({ title, description, content, slug, date, preview, draft }),
                 redirect: 'follow'
             });
             const result = await response.json();
@@ -105,6 +106,12 @@ export default function CreateBlog() {
                     <div style={{ clear: "both" }}></div>
                     <input type="checkbox" id="sn-preview" className="sidenote-toggle" />
                     <span className="sidenote">URL for link preview. Optional</span>
+
+                    <label htmlFor="draft" style={{ float: "left" }}>Mark as draft:&nbsp;</label><label htmlFor="sn-draft" className="sidenote-toggle">⋆</label>
+                    <input type="checkbox" id="draft" name="draft" style={{ float: "right" }} checked={draft} onChange={e => setDraft(e.target.checked)} />
+                    <div style={{ clear: "both" }}></div>
+                    <input type="checkbox" id="sn-draft" className="sidenote-toggle" />
+                    <span className="sidenote">If checked, this blog won't be publicly visible</span>
 
                     <br />
                     <ReactMde

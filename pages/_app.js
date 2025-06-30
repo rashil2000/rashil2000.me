@@ -92,6 +92,7 @@ export default function MyApp({ Component, pageProps }) {
           text-align: center;
         }
         #date-style {
+          text-align: right;
           font-style: italic;
           text-decoration: none;
           margin-bottom: 10px;
