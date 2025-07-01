@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { baseUrl, dateString } from '../lib/utils'
+import { baseUrl, dateString } from '../lib/commonUtils'
 
 export default function Home() {
   return (

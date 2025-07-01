@@ -1,85 +1,8 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { MarkdownHooks } from 'react-markdown'
-import rehypeStarryNight from 'rehype-starry-night'
-import { DiscussionEmbed } from 'disqus-react'
-
-import { baseUrl, dateString, getBlog, getBlogs } from '../../lib/utils'
+import EntityDisplay from '../../components/EntityDisplay'
+import { EntityTypes, getBlog, getBlogs } from '../../lib/commonUtils'
 
 export default function Blog({ blog }) {
-  const router = useRouter()
-
-  // If the page is not yet generated, this will be displayed initially until static props are fetched
-  if (router.isFallback) {
-    return (
-      <div>
-        <Head>
-          <title>Loading... - rashil2000</title>
-          <meta name="description" content="Loading blog data..." />
-        </Head>
-        <main>
-          <div className="abstract">
-            <h2>Loading...</h2>
-            <br /><br />
-            <p>Loading blog data, please wait...</p>
-            <br />
-          </div>
-          <br /><br />
-        </main>
-        <footer>
-          <table id="no-border" style={{ width: "100%" }}>
-            <tbody>
-              <tr>
-                <td id="no-border" style={{ width: "50%" }}><Link href="/blogs"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Blogs</p></Link></td>
-                <td id="no-border" style={{ width: "50%" }}><Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link></td>
-              </tr>
-            </tbody>
-          </table>
-        </footer>
-      </div>
-    );
-  }
-
-  return (
-    <div>
-      <Head>
-        <title>{`${blog.title} - rashil2000`}</title>
-        <meta name="description" content={blog.description} />
-        <meta property="og:image" content={blog.preview} />
-      </Head>
-      <header>
-        <p className="author">
-          <i>{`Posted: ${dateString(blog.date)}`}</i>
-        </p>
-      </header>
-      <main id="markdown-box">
-        <MarkdownHooks children={blog.content} rehypePlugins={[rehypeStarryNight]}/>
-        <br />
-      </main>
-      <DiscussionEmbed
-        shortname='rashil2000'
-        config={
-          {
-            url: `${baseUrl}/blogs/${blog.slug}`,
-            identifier: `/blog/${blog.slug}`,
-            title: blog.title,
-          }
-        }
-      />
-      <br />
-      <footer>
-        <table id="no-border" style={{ width: "100%" }}>
-          <tbody>
-            <tr>
-              <td id="no-border" style={{ width: "50%" }}><Link href="/blogs"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Blogs</p></Link></td>
-              <td id="no-border" style={{ width: "50%" }}><Link href="/"><p className="author" style={{ fontVariantCaps: "all-small-caps" }}>Home</p></Link></td>
-            </tr>
-          </tbody>
-        </table>
-      </footer>
-    </div>
-  );
+  return <EntityDisplay entity={blog} entityType={EntityTypes.Blog} />;
 }
 
 export const getStaticPaths = async () => (

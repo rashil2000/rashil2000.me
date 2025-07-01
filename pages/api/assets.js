@@ -3,7 +3,7 @@ import { handleUpload } from '@vercel/blob/client';
 import { del, list } from '@vercel/blob';
 
 import { authOptions } from './auth/[...nextauth]';
-import { buildFileTree } from '../../lib/utils';
+import { buildFileTree } from '../../lib/assetUtils';
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions);
