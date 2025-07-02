@@ -48,15 +48,15 @@ export default function EntityEditor({ entityType }) {
     );
   }
 
-  const [content, setContent] = useState('');
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [content, setContent] = useState('Fetching...');
+  const [title, setTitle] = useState('Fetching...');
+  const [description, setDescription] = useState('Fetching...');
   const [date, setDate] = useState(''); // Blog specific
   const [github, setGithub] = useState(''); // Project specific
   const [preview, setPreview] = useState('');
   const [draft, setDraft] = useState(false);
   const [selectedTab, setSelectedTab] = useState("write");
-  const [currentImages, setCurrentImages] = useState({ children: [] });
+  const [currentImages, setCurrentImages] = useState();
 
   useEffect(() => {
     async function getEntity() {
@@ -223,7 +223,7 @@ export default function EntityEditor({ entityType }) {
         </form>
 
         <div className="abstract"><h2>Images</h2></div>
-        {currentImages && currentImages.children && currentImages.children.length !== 0
+        {currentImages && currentImages.children ? currentImages.children.length !== 0
             ?
             <React.Fragment>
               <span style={{ float: "left" }}>{slug}</span>
@@ -242,6 +242,7 @@ export default function EntityEditor({ entityType }) {
             <div className="abstract">
               No images found for this {entityLower}. Use the form below to upload one.
             </div>
+          : <div className="abstract">Fetching...</div>
         }
         <br />
         <form className="abstract" onSubmit={handleImageUpload} id='imageForm'>

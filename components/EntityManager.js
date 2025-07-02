@@ -6,8 +6,8 @@ import { baseUrl, sortByDate } from '../lib/commonUtils'
 import { imageDeleter, imageLister } from "../lib/assetUtils";
 
 export default function EntityManager({ entityType }) {
-  const [currentEntities, setCurrentEntities] = useState([]);
-  const [currentImages, setCurrentImages] = useState({ children: [] });
+  const [currentEntities, setCurrentEntities] = useState();
+  const [currentImages, setCurrentImages] = useState();
   const entityLowerPlural = entityType.typeLower + 's';
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function EntityManager({ entityType }) {
         <br />
         <div className="abstract"><h2>Manage {entityType.typePlural}</h2></div>
         <br />
-        {currentEntities.map(entity => (
+        {currentEntities ? currentEntities.map(entity => (
           <React.Fragment key={entity._id}>
             <Link href={`/${entityLowerPlural}/[slug]`} as={`/${entityLowerPlural}/${entity.slug}`}>
               <h5 style={{ margin: "0" }}>{entity.title}</h5>
@@ -79,14 +79,14 @@ export default function EntityManager({ entityType }) {
             <div style={{ clear: "both" }}></div>
             <br />
           </React.Fragment>
-        ))}
+        )) : <div className="abstract">Fetching...</div>}
         <div className="abstract">
           <span id={`${entityLowerPlural}DeleteSpan`}></span>
         </div>
 
         <div className="abstract"><h2>Images</h2></div>
         <br />
-        {currentImages && currentImages.children && currentImages.children.map(folder => (
+        {currentImages && currentImages.children ? currentImages.children.length !== 0 ? currentImages.children.map(folder => (
           <React.Fragment key={folder.path}>
             <span style={{ float: "left" }}>{folder.name}</span>
             <span style={{ cursor: 'pointer', float: "right", fontStyle: "italic" }} onClick={() => handleImageDelete(folder.path)}>Remove all</span>
@@ -100,7 +100,8 @@ export default function EntityManager({ entityType }) {
             ))}
             <br />
           </React.Fragment>
-        ))}
+        )) : <div className="abstract">No images found for {entityLowerPlural}.</div>
+          : <div className="abstract">Fetching...</div>}
         <div id='imageSpan' className="abstract"></div>
         <br />
       </main>
