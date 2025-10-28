@@ -72,6 +72,17 @@ export default function MyApp({ Component, pageProps }) {
             text-decoration: none;
             color: #08c;
           }
+          #markdown-box blockquote {
+            margin: 0;
+            padding: 0 1em;
+            color: #777;
+            border-left: .25em solid;
+          }
+          #markdown-box code:not(pre *) {
+            padding: .2em;
+            background-color: rgba(0, 0, 0, .04);
+            border-radius: 3px;
+          }
         `}</style>
         <Component {...pageProps} />
         <Analytics />

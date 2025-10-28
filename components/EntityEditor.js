@@ -212,7 +212,7 @@ export default function EntityEditor({ entityType }) {
             onChange={setContent}
             selectedTab={selectedTab}
             onTabChange={setSelectedTab}
-            generateMarkdownPreview={markdown => Promise.resolve(<MarkdownHooks children={markdown} rehypePlugins={[rehypeStarryNight]}/>)}
+            generateMarkdownPreview={markdown => Promise.resolve(<div id="markdown-box"><MarkdownHooks children={markdown} rehypePlugins={[rehypeStarryNight]}/></div>)}
             minEditorHeight={300}
           />
 
