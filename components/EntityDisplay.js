@@ -3,9 +3,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { MarkdownHooks } from 'react-markdown'
 import rehypeStarryNight from 'rehype-starry-night'
-import { DiscussionEmbed } from 'disqus-react'
+import Giscus from '@giscus/react'
 
-import { baseUrl, dateString } from '../lib/commonUtils'
+import { dateString } from '../lib/commonUtils'
 
 export default function EntityDisplay({ entity, entityType }) {
   const router = useRouter()
@@ -63,13 +63,18 @@ export default function EntityDisplay({ entity, entityType }) {
         <MarkdownHooks children={entity.content} rehypePlugins={[rehypeStarryNight]}/>
         <br />
       </main>
-      <DiscussionEmbed
-        shortname='rashil2000'
-        config={{
-          url: `${baseUrl}/${entityType.typeLower}s/${entity.slug}`,
-          identifier: `/${entityType.typeLower}/${entity.slug}`,
-          title: entity.title,
-        }}
+      <Giscus
+        repo="rashil2000/rashil2000.me"
+        repoId="MDEwOlJlcG9zaXRvcnkyOTg4MzQ2MTM="
+        category="Site comments"
+        categoryId="DIC_kwDOEc_atc4CxNBT"
+        mapping="pathname"
+        reactionsEnabled="1"
+        emitMetadata="0"
+        inputPosition="top"
+        theme="preferred_color_scheme"
+        lang="en"
+        loading="lazy"
       />
       <br />
       <footer>

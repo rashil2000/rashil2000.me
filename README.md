@@ -17,4 +17,4 @@
 - Add new blogs and projects, writing them in a Markdown editor - using [React Markdown Editor](https://www.npmjs.com/package/react-mde).
 - Edit, delete or draft (to publish later) blogs and projects - stored in MongoDB using [Mongoose](https://mongoosejs.com/).
 - List, upload or delete images for link previews and Markdown content - stored in [Vercel Blob](https://vercel.com/docs/vercel-blob).
-- Embed discussion threads in blogs and projects using [Disqus](https://disqus.com/).
+- Embed discussion threads in blogs and projects using [Giscus](https://giscus.app/).
